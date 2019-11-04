@@ -15,7 +15,7 @@ public class ExampleCharacter : ByTheTale.StateMachine.MachineBehaviour
     {
         AddState<ExampleCharacterIdle>();
         AddState<ExampleCharacterWander>();
-
+        Debug.Log("add states");
         SetInitialState<ExampleCharacterIdle>();
     }
 

@@ -1,4 +1,6 @@
-﻿namespace ByTheTale.StateMachine
+﻿using UnityEngine;
+
+namespace ByTheTale.StateMachine
 {
     public abstract class MachineBehaviour : UnityEngine.MonoBehaviour, MachineInterface
     {
@@ -14,13 +16,14 @@
 
         public virtual void Start()
         {
+            Debug.Log("start");
             Initialize();
         }
 
         public virtual void Initialize()
         {
             AddStates();
-
+            
             currentState = initialState;
             if (null == currentState)
             {

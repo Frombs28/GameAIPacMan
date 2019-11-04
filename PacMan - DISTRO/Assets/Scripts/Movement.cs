@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +28,7 @@ public class Movement : MonoBehaviour {
 	private static Vector2 right = new Vector2(1f,0f);
 	private static Vector2 left = new Vector2(-1f,0f);
 
+    public Vector2[] dirArray = { none, up, down, right, left};
 	// Use this for initialization
 	void Start () {
 		string text = inputMap.text;
@@ -34,7 +36,9 @@ public class Movement : MonoBehaviour {
 		Map = lines;
 		animator = GetComponent<Animator> ();
 	}
-	
+
+
+
 	// Update is called once per frame
 	void Update () {
 
