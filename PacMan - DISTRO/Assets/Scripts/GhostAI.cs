@@ -34,6 +34,40 @@ using UnityEngine;
  * 
  *****************************************************************************/
 
+// HOW THE GHOST BEHAVIOR WORKS
+// Ghosts Cannot Reverse Directions (If they're traveling vertically, their next direction has to be horizontal. Vice Versa)
+// When Ghosts leave the ghost house, they always start moving left
+// Ghosts follow a target tile. They all follow it in the same way, but differ in choosing which tile to target
+// 3 Modes: Chase, Scatter, and Frightened
+// Scatter Mode: Ghosts target separate corners. Red top right, Pink top left, Blue bottom right, Orange bottom left
+// Targets in scatter mode are located outside of the board, and since ghosts can't turn around if they were in scatter mode forever they would do loops around the corner obstacles. 
+// Frightened Mode: Ghosts make random turn choices at intersections
+// Chase Mode: Ghosts choose target tile as specified below
+// RED (BLINKY) Target tile is pacman directly
+// PINK (PINKY) Target tile is 2 in front of pacman, exits ghost house immediately after red moves off the tile.  
+// BLUE (INKY) Target tile is calculated as following: Take Pinky's target tile (2 tiles in front of pac man), calculate the distance from Blinky to it, invert that distance. I'll show a chart below. It exits the ghost house after pacman eats 30 dots
+/*
+ *    ------I---   O = pacman (facing right)
+ *    ----------   B = Blinky
+ *    --O-P-----   P = Pinky Target Tile
+ *    ----------   I = Inky Target Tile
+ *    --B-------   
+ */
+// ORANGE (CLYDE) Exits ghost house after 1/3 of dots eaten (#?), when he is less than 8 tile distance from pacman, he chases like blinky, otherwise he goes to scatter mode
+
+// Ghosts are in frightened mode when a power pellet is eaten.
+// Otherwise, ghosts go between scatter and chase mode. They follow the following timer:
+// Scatter 7 sec, Chase 20 sec, Scatter 7 sec, Chase 20 sec, Scatter 5 sec, Chase 20 sec, Scatter 5 sec, Chase permanently
+// The timer is paused when in frightened mode, and is reset when starting a new level or losing a life
+
+// No fancy turning AI A* code, simply turn in the direction of the target tile
+// We might want to make target tiles child gameobjects of pacman so the unity Transform engine just tracks it all for us
+
+// We need to model the 4 FSM's like the original, and make another version for each. An advanced one could be implementing A* instead of simple turning
+// Or we could just tweak the chase values
+
+// Scatter isn't required for the homework, in fact it's only 2% extra credit to implement. 
+
 public class GhostAI : MonoBehaviour {
 
     const int BLINKY = 1;   // These are used to set ghostID, to facilitate testing.
