@@ -175,7 +175,7 @@ public class GhostAI : MonoBehaviour {
     /// 
     /// </summary>
 	void Update () {
-        if (targetTile.name[0] == 'B') Debug.Log(_state);
+        //if (targetTile.name[0] == 'B') Debug.Log(_state);
 		switch (_state) {
 		case(State.waiting):
 
@@ -210,6 +210,10 @@ public class GhostAI : MonoBehaviour {
 			break;
 
 		case(State.active):
+
+            if (fleeing) {
+
+            }
             if (dead) {
                     //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
                     actualTarget = gate.transform.position - new Vector3(0, -1.5f, 0);
@@ -219,8 +223,15 @@ public class GhostAI : MonoBehaviour {
                 }
             //Steering AI here
             movementConfirm--;
-            
-            int newDir = directionToTurn();
+
+
+                int newDir;
+            if (fleeing) {
+                newDir = getFleeingDirection();
+            }
+            else {
+                newDir = directionToTurn();
+            } 
             
             if (newDir != currentDir) {
                 if (movementConfirm <= 0) {
@@ -320,4 +331,21 @@ public class GhostAI : MonoBehaviour {
 
         return directionToMove;
     }
+    private int getFleeingDirection()
+    {
+        List<int> potentialDirs = new List<int>();
+        for (int i = 0; i < 4; i++)
+        {
+            //Can't turn around, ignore
+            if ((i + 2) % 4 == currentDir) continue;
+
+            if (move.checkDirectionClear(num2vec(i)))
+            {
+                potentialDirs.Add(i);
+            }
+        }
+
+        return potentialDirs[(int)Mathf.Floor(Random.value * potentialDirs.Count)];
+    }
+
 }

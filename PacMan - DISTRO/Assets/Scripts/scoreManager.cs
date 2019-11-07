@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class scoreManager : MonoBehaviour {
 
     public GameObject gameOver;
+
+    public GameObject gameWon;
     public GameObject[] liveSprite;
     public GameObject inky;
     public GameObject clyde;
@@ -31,9 +33,17 @@ public class scoreManager : MonoBehaviour {
 
     AudioSource aud;
 
-	// Use this for initialization
-	void Start ()
+
+
+    public int numPelets;
+
+
+    // Use this for initialization
+    void Start ()
     {
+        //numPelets = GameObject.FindGameObjectsWithTag("pellet").Length;
+        numPelets = 1;
+
         aud = GetComponent<AudioSource>();
         score = 0;
         newlife = 0;
@@ -64,6 +74,7 @@ public class scoreManager : MonoBehaviour {
 
     private void Update()
     {
+        detectForGameWon();
         if (powerPellet)
         {
 			if (timer <= 3f && !blinking) {
@@ -261,4 +272,24 @@ public class scoreManager : MonoBehaviour {
         blinky.GetComponent<GhostAI>().restart();
     }
 
+    public void detectForGameWon()
+    {
+        if (numPelets <= 0)
+        {
+            instantiateNewGame();
+        }
+    }
+    public void instantiateNewGame()
+    {
+
+        Debug.Log("GAME WON");
+        //Restart();
+        //reset the score
+
+        //reset the ghost postions
+        //reset the lives?
+        //make the ghosts faster
+        //
+
+    }
 }

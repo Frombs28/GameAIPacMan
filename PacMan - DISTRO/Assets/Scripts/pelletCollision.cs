@@ -16,10 +16,13 @@ public class pelletCollision : MonoBehaviour {
     public AudioClip pellet;
     public AudioClip eatGhost;
 
+
     AudioSource aud;
 
+    private scoreManager sm;
     private void Start()
     {
+
         gameManager = GameObject.Find("GameManager");
 		clyde = GameObject.Find("Clyde(Clone)") ? GameObject.Find("Clyde(Clone)") : GameObject.Find("Clyde 1(Clone)");
 		pinky = GameObject.Find("Pinky(Clone)") ? GameObject.Find("Pinky(Clone)"): GameObject.Find("Pinky 1(Clone)");
@@ -31,11 +34,15 @@ public class pelletCollision : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
 		if (collision.tag == "pellet") {
             aud.Play();
 			Destroy (collision.gameObject);
 			gameManager.SendMessage("updateScore");
-		}
+            Debug.Log(gameManager.GetComponent<scoreManager>().numPelets);
+            gameManager.GetComponent<scoreManager>().numPelets--;
+
+        }
 
         if (collision.tag == "powerpellet")
         {
@@ -102,5 +109,8 @@ public class pelletCollision : MonoBehaviour {
         aud.clip = pellet;
         Time.timeScale = 1f;
     }
+
+    
+
 
 }
