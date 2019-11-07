@@ -183,7 +183,8 @@ public class GhostAI : MonoBehaviour {
     /// </summary>
 	void Update () {
         //if (targetTile.name[0] == 'B') Debug.Log(_state);
-		switch (_state) {
+        int newDir;
+        switch (_state) {
 		case(State.waiting):
 
             // below is some sample code showing how you deal with animations, etc.
@@ -212,9 +213,18 @@ public class GhostAI : MonoBehaviour {
                 //Stuck in this state?
                 //TODO: Have The Ghosts transform.translate towards the starting pos, turn state to active when finished
 
-            if (!foundLeave1)
-            {
-                actualTarget = leave1;
+            actualTarget = leave2;
+            
+            movementConfirm--;
+            
+            newDir = directionToTurn(dead);
+            
+            if (newDir != currentDir) {
+                if (movementConfirm <= 0) {
+                    currentDir = newDir;
+                    move._dir = (Movement.Direction)currentDir;
+                    movementConfirm = 10;
+                }
             }
             else
             {
@@ -265,12 +275,12 @@ public class GhostAI : MonoBehaviour {
             movementConfirm--;
 
 
-                int newDir;
+             
             if (fleeing) {
                 newDir = getFleeingDirection();
             }
             else {
-                newDir = directionToTurn();
+                newDir = directionToTurn(dead);
             } 
             
             if (newDir != currentDir) {
