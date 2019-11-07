@@ -96,7 +96,7 @@ public class scoreManager : MonoBehaviour {
 			}
             if(timer <= 0f)
             {
-                aud.clip = ghostRun;
+                aud.clip = ghostChase;
                 aud.Play();
                 powerPellet = false;
                 timer = 9f;

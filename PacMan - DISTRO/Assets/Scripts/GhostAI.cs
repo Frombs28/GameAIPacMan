@@ -93,9 +93,11 @@ public class GhostAI : MonoBehaviour {
 
     public bool dead = false;               // state variables
 	public bool fleeing = false;
+    private Vector3 leave1;
+    private Vector3 leave2;
 
-	//Default: base value of likelihood of choice for each path
-	public float Dflt = 1f;
+    //Default: base value of likelihood of choice for each path
+    public float Dflt = 1f;
 
 	//Available: Zero or one based on whether a path is available
 	int A = 0;
@@ -159,6 +161,8 @@ public class GhostAI : MonoBehaviour {
 		gate = GameObject.Find("Gate(Clone)");
 		pacMan = GameObject.Find("PacMan(Clone)") ? GameObject.Find("PacMan(Clone)") : GameObject.Find("PacMan 1(Clone)");
 		releaseTimeReset = releaseTime;
+        leave1 = new Vector3(13.5f, -13.9f, -2f);
+        leave2 = new Vector3(13.5f, -11.0f, -2f);
 	}
 
 	public void restart(){
@@ -202,11 +206,32 @@ public class GhostAI : MonoBehaviour {
 
 
 		case(State.leaving):
-            //Stuck in this state?
-            //TODO: Have The Ghosts transform.translate towards the starting pos, turn state to active when finished
+                //Stuck in this state?
+                //TODO: Have The Ghosts transform.translate towards the starting pos, turn state to active when finished
 
-            _state = State.active;
-                move._dir = Movement.Direction.right;
+            actualTarget = leave2;
+            
+            movementConfirm--;
+            
+            int newDir = directionToTurn();
+            
+            if (newDir != currentDir) {
+                if (movementConfirm <= 0) {
+                    currentDir = newDir;
+                    move._dir = (Movement.Direction)currentDir;
+                    movementConfirm = 10;
+                }
+            }
+
+                //print("here");
+
+            // When we reach our target (approximately), move on to the next state
+            if((leave2 - transform.position).magnitude < 0.0001f)
+            {
+                   // _state = State.active;
+                    move._dir = Movement.Direction.right;
+            }
+            
 			break;
 
 		case(State.active):
@@ -216,9 +241,20 @@ public class GhostAI : MonoBehaviour {
             }
             if (dead) {
                     //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
-                    actualTarget = gate.transform.position - new Vector3(0, -1.5f, 0);
-                    
-            } else {
+                    actualTarget = startPos;
+                    //If back at starting position
+                    if (Vector3.Distance(transform.position, actualTarget) < 0.2f) {
+                        _state = State.leaving;
+                        gameObject.GetComponent<Animator>().SetBool("Dead", false);
+                        gameObject.GetComponent<Animator>().SetBool("Running", false);
+                        gameObject.GetComponent<Animator>().SetBool("Flicker", false);
+                        dead = false;
+                        fleeing = false;
+                        move.MSpeed = 5f;
+                        gameObject.GetComponent<CircleCollider2D>().enabled = true;
+                    }
+
+                } else {
                     actualTarget = targetTile.position;
                 }
             //Steering AI here
@@ -307,13 +343,13 @@ public class GhostAI : MonoBehaviour {
 		return true;
 	}
 
-    private int directionToTurn() {
+    private int directionToTurn(bool isDead) {
         List<int> potentialDirs = new List<int>();
         for (int i = 0; i < 4; i++) {
             //Can't turn around, ignore
             if ((i + 2) % 4 == currentDir) continue;
 
-            if (move.checkDirectionClear(num2vec(i))) {
+            if (move.checkDirectionClear(num2vec(i), !isDead)) {
                 potentialDirs.Add(i);
             }
         }

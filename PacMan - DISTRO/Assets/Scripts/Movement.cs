@@ -90,7 +90,7 @@ public class Movement : MonoBehaviour {
 		}
 	}
 
-	public bool checkDirectionClear(Vector2 direction){
+    public bool checkDirectionClear(Vector2 direction, bool hitGate = true){
 		int y =-1 * Mathf.RoundToInt( transform.position.y);
 		int x = Mathf.RoundToInt (transform.position.x);
 
@@ -98,7 +98,7 @@ public class Movement : MonoBehaviour {
 
 		if (direction.x == 0 && direction.y == 1) {
 			y =-1 * Mathf.FloorToInt( transform.position.y);
-			if(Map[y-1][x] == '-'|| Map[y-1][x]  == '#'){
+			if(Map[y-1][x] == '-'|| (hitGate && Map[y-1][x]  == '#')) {
 				return false;
 			}
 		} else if(direction.x == 1 && direction.y == 0){
@@ -107,12 +107,12 @@ public class Movement : MonoBehaviour {
 			}
 
 			x = Mathf.FloorToInt (transform.position.x);
-			if(Map[y][x+1] == '-' || Map[y][x+1] == '#'){
+			if(Map[y][x+1] == '-' || (hitGate && Map[y][x+1] == '#')) {
 				return false;
 			}
 		} else if(direction.x == 0 && direction.y == -1){
 			y =-1 * Mathf.CeilToInt( transform.position.y);
-			if(Map[y+1][x] == '-'|| Map[y+1][x] == '#'){
+			if(Map[y+1][x] == '-'|| (hitGate && Map[y+1][x] == '#')) {
 				return false;
 			}
 		} else if(direction.x == -1 && direction.y == 0){
@@ -121,7 +121,7 @@ public class Movement : MonoBehaviour {
 			}
 
 			x = Mathf.CeilToInt (transform.position.x);
-			if(Map[y][x-1] == '-'|| Map[y][x-1] == '#'){
+			if(Map[y][x-1] == '-'|| (hitGate && Map[y][x-1] == '#')) {
 				return false;
 			}
 		}
