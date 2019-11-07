@@ -141,6 +141,8 @@ public class GhostAI : MonoBehaviour {
 
 	public State _state = State.waiting;
 
+    public Transform targetTile;
+
     // Use this for initialization
     private void Awake()
     {

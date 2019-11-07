@@ -55,6 +55,7 @@ public class MazeCreator : MonoBehaviour {
 
 
 	void Awake () {
+        GameObject sBlinky = null, sPinky = null, sInky = null, sClyde = null, sPacman = null;
 
         // Get the input map and split it up
         string text = inputMap.text;
@@ -73,7 +74,8 @@ public class MazeCreator : MonoBehaviour {
                 {
                     if (lines[i][j+1] == '0')
                     {
-                        Instantiate(pacman, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
+                        sPacman = Instantiate(pacman, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
+                       
                     }
                 }
 
@@ -83,7 +85,7 @@ public class MazeCreator : MonoBehaviour {
                 {
                     if (lines[i][j + 1] == 'b')
                     {
-                        Instantiate(blinky, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
+                        sBlinky = Instantiate(blinky, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
                     }
                 }
                 // Pinky
@@ -91,14 +93,14 @@ public class MazeCreator : MonoBehaviour {
                 {
                     if (lines[i][j + 1] == 'p')
                     {
-                        Instantiate(pinky, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
+                        sPinky = Instantiate(pinky, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
                     }
                 }
                 // Inky
                 if (lines[i][j] == 'i') {
                     if (lines[i][j + 1] == 'i')
                     {
-                        Instantiate(inky, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
+                        sInky = Instantiate(inky, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
                     }
                 }
                 // Clyde
@@ -106,7 +108,7 @@ public class MazeCreator : MonoBehaviour {
                 {
                     if (lines[i][j + 1] == 'c')
                     {
-                        Instantiate(clyde, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
+                        sClyde = Instantiate(clyde, new Vector3(j + 0.5f, -1 * i, -2), Quaternion.identity);
                     }
                 }
 
@@ -365,7 +367,15 @@ public class MazeCreator : MonoBehaviour {
             }
         }
         cam.transform.position = new Vector3(lines[0].Length / 2, lines.Length / -2, -10);
-	}
+
+        sBlinky.GetComponent<GhostAI>().targetTile = sPacman.GetComponent<TargetTilesController>().blinkyTarget;
+        sPinky.GetComponent<GhostAI>().targetTile = sPacman.GetComponent<TargetTilesController>().pinkyTarget;
+        sInky.GetComponent<GhostAI>().targetTile = sPacman.GetComponent<TargetTilesController>().inkyTarget;
+        sClyde.GetComponent<GhostAI>().targetTile = sPacman.GetComponent<TargetTilesController>().clydeTarget;
+
+        sPacman.GetComponent<TargetTilesController>().blinky = sBlinky.transform;
+        sPacman.GetComponent<TargetTilesController>().clyde = sClyde.transform;
+    }
 	
 	// Update is called once per frame
 	void Update () {
