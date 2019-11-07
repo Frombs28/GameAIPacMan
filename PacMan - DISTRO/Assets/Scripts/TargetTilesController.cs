@@ -19,7 +19,7 @@ public class TargetTilesController : MonoBehaviour {
         inkyTarget.position = pinkyTarget.position + (pinkyTarget.position - blinky.position);
 
         //If clyde within 8 tiles
-        if (Vector3.Distance(transform.position, clyde.position) <= 8*cellSize) {
+        if (Vector3.Distance(transform.position, clyde.position) >= 8*cellSize) {
             clydeTarget.position = blinkyTarget.position;
         } else {
             clydeTarget.position = bottomLeft;

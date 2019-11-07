@@ -7,13 +7,12 @@ public class Movement : MonoBehaviour {
 
 	Animator animator;
 
-	public enum Direction{
-		still,
+	public enum Direction { 
 		up,
-		down,
+        right,
+        down,
 		left,
-		right
-
+        still
 	}
 	public TextAsset inputMap;
 	public string[] Map;
