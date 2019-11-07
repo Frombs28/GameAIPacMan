@@ -143,6 +143,10 @@ public class GhostAI : MonoBehaviour {
 
     public Transform targetTile;
 
+    int currentDir = 1;
+
+    private int movementConfirm = 10;
+
     // Use this for initialization
     private void Awake()
     {
@@ -170,6 +174,7 @@ public class GhostAI : MonoBehaviour {
     /// 
     /// </summary>
 	void Update () {
+        if (targetTile.name[0] == 'B') Debug.Log(_state);
 		switch (_state) {
 		case(State.waiting):
 
@@ -196,15 +201,29 @@ public class GhostAI : MonoBehaviour {
 
 
 		case(State.leaving):
+            //Stuck in this state?
+            //TODO: Have The Ghosts transform.translate towards the starting pos, turn state to active when finished
 
+            _state = State.active;
+                move._dir = Movement.Direction.right;
 			break;
 
 		case(State.active):
             if (dead) {
-                // etc.
-                // most of your AI code will be placed here!
+                //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
             }
-            // etc.
+            //Steering AI here
+            movementConfirm--;
+            
+            int newDir = directionToTurn();
+            
+            if (newDir != currentDir) {
+                if (movementConfirm <= 0) {
+                    currentDir = newDir;
+                    move._dir = (Movement.Direction)currentDir;
+                    movementConfirm = 10;
+                }
+            }
 
 			break;
 
@@ -248,6 +267,21 @@ public class GhostAI : MonoBehaviour {
         }
 	}
 
+    Vector3 num2vec3(int n) {
+        switch (n) {
+            case 0:
+                return new Vector3(0, 1, 0);
+            case 1:
+                return new Vector3(1, 0, 0);
+            case 2:
+                return new Vector3(0, -1, 0);
+            case 3:
+                return new Vector3(-1, 0, 0);
+            default:    // should never happen
+                return new Vector3(0, 0, 0);
+        }
+    }
+
 	bool compareDirections(bool[] n, bool[] p){
 		for(int i = 0; i < n.Length; i++){
 			if (n [i] != p [i]) {
@@ -256,4 +290,29 @@ public class GhostAI : MonoBehaviour {
 		}
 		return true;
 	}
+
+    private int directionToTurn() {
+        List<int> potentialDirs = new List<int>();
+        for (int i = 0; i < 4; i++) {
+            //Can't turn around, ignore
+            if ((i + 2) % 4 == currentDir) continue;
+
+            if (move.checkDirectionClear(num2vec(i))) {
+                potentialDirs.Add(i);
+            }
+        }
+
+        //Loop through directions, calculate which one will make pacman be closer to the target
+        float lowestDistance = 999;
+        int directionToMove = -1;
+        for (int i = 0; i < potentialDirs.Count; i++) {
+            float currentDirDistance = Vector3.Distance(transform.position + num2vec3(potentialDirs[i]), targetTile.position);
+            if (currentDirDistance < lowestDistance) {
+                lowestDistance = currentDirDistance;
+                directionToMove = potentialDirs[i];
+            }
+        }
+
+        return directionToMove;
+    }
 }
