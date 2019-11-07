@@ -175,7 +175,7 @@ public class GhostAI : MonoBehaviour {
     /// 
     /// </summary>
 	void Update () {
-        if (targetTile.name[0] == 'B') Debug.Log(_state);
+        if (targetTile.name[0] == 'B') Debug.Log(_state + ", Dead: " + dead);
 		switch (_state) {
 		case(State.waiting):
 
@@ -212,15 +212,23 @@ public class GhostAI : MonoBehaviour {
 		case(State.active):
             if (dead) {
                     //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
-                    actualTarget = gate.transform.position - new Vector3(0, -1.5f, 0);
-                    
-            } else {
+                    actualTarget = startPos;
+                    if (Vector3.Distance(transform.position, actualTarget) < 0.2f) {
+                        _state = State.leaving;
+                        gameObject.GetComponent<Animator>().SetBool("Dead", false);
+                        gameObject.GetComponent<Animator>().SetBool("Running", false);
+                        gameObject.GetComponent<Animator>().SetBool("Flicker", false);
+                        dead = false;
+                        fleeing = false;
+                    }
+
+                } else {
                     actualTarget = targetTile.position;
                 }
             //Steering AI here
             movementConfirm--;
             
-            int newDir = directionToTurn();
+            int newDir = directionToTurn(dead);
             
             if (newDir != currentDir) {
                 if (movementConfirm <= 0) {
@@ -296,13 +304,13 @@ public class GhostAI : MonoBehaviour {
 		return true;
 	}
 
-    private int directionToTurn() {
+    private int directionToTurn(bool isDead) {
         List<int> potentialDirs = new List<int>();
         for (int i = 0; i < 4; i++) {
             //Can't turn around, ignore
             if ((i + 2) % 4 == currentDir) continue;
 
-            if (move.checkDirectionClear(num2vec(i))) {
+            if (move.checkDirectionClear(num2vec(i), !isDead)) {
                 potentialDirs.Add(i);
             }
         }
