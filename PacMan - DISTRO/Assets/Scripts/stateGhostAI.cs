@@ -35,14 +35,14 @@ public class chaseState : ByTheTale.StateMachine.State
 {
 
     public stateGhostAI blinkyAI { get { return (stateGhostAI)machine; } }
-    public GameObject targetSquare;
+    Vector3 targetSquare;
     private Movement movement;
     private bool lastDirectionVert = false;
 
     public override void Enter()
     {
         base.Enter();
-        targetSquare = blinkyAI.player;
+        targetSquare = blinkyAI.player.GetComponent<TargetTilesController>().blinkyTarget.transform.position;
         movement = blinkyAI.GetComponent<Movement>();
         movement._dir = Movement.Direction.left;
 
@@ -51,10 +51,8 @@ public class chaseState : ByTheTale.StateMachine.State
     public override void Execute()
     {
         base.Execute();
-        targetSquare = blinkyAI.player;
-        setLastDirectionVert();
+        targetSquare = blinkyAI.player.GetComponent<TargetTilesController>().blinkyTarget.transform.position;
         updatePos();
-        setLastDirectionVert();
         //check for new direction here
 
 
@@ -69,57 +67,13 @@ public class chaseState : ByTheTale.StateMachine.State
     //when it reaches a dead, end, make the decision based on where the target direction is.
     public void updatePos() {
 
-        if (movement._dir == Movement.Direction.still) {
-            Debug.Log(lastDirectionVert);
-            Vector3 directionToTarget = targetSquare.transform.position - blinkyAI.transform.position;
-
-
-            if (lastDirectionVert)
-            {
-                //right is a valid option
-                if (movement.checkDirectionClear(Vector2.right))
-                {
-                    //left is a valid options
-                    if (movement.checkDirectionClear(Vector2.left))
-                    {
-                        //check the best one
-                        movement._dir = getClosestDirection(directionToTarget);
-                    }
-                    else
-                    {
-                        //only right is valid
-                        movement._dir = Movement.Direction.right;
-                    }
-
-                }
-                else {
-                    movement._dir = Movement.Direction.left;
-                }
-
-            }
-            else {
-                if (movement.checkDirectionClear(Vector2.up))
-                {
-                    if (movement.checkDirectionClear(Vector2.down))
-                    {
-                        movement._dir = getClosestDirection(directionToTarget);
-                    }
-                    else
-                    {
-                        movement._dir = Movement.Direction.up;
-                    }
-                }
-                else {
-                    movement._dir = Movement.Direction.down;
-                }
-            }
-            lastDirectionVert = !lastDirectionVert;
+        if (movement._dir == Movement.Direction.still || isAtIntersection())
+        {
+            Vector3 directionToTarget = (targetSquare - blinkyAI.transform.position).normalized;
+            movement._dir = setDirection(directionToTarget);
+            lastDirectionVert = (movement._dir == Movement.Direction.up ||
+                movement._dir == Movement.Direction.down);
         }
-
-        if (isAtIntersection()) {
-            
-        }
-
         //if (isAtIntersection()) {
         //    //check if taking the intersection would be better than staying on your current trajectory
 
@@ -165,63 +119,70 @@ public class chaseState : ByTheTale.StateMachine.State
 
 
     //gets the closest direction
-    public Movement.Direction getClosestDirection(Vector3 dirToTarget) {
+    public Movement.Direction setDirection(Vector3 dirToTarget) {
         //check only left right
+
+        List<KeyValuePair<float, Movement.Direction>> validOptions = new List<KeyValuePair<float, Movement.Direction>>();
         if (lastDirectionVert)
         {
-            //check if better option than current direction
 
-            float leftA = Vector2.Angle(Vector3.left, dirToTarget);
-            float rightA = Vector2.Angle(Vector3.right, dirToTarget);
-
-            if (movement._dir == Movement.Direction.still) {
-                return getBestOption(new List<KeyValuePair<float, Movement.Direction>>() {
-                    new KeyValuePair<float, Movement.Direction>(leftA, Movement.Direction.left),
-                    new KeyValuePair<float, Movement.Direction>(rightA, Movement.Direction.right)
-                });
+            if (movement.checkDirectionClear(Vector2.left)) {
+                validOptions.Add(new KeyValuePair<float, Movement.Direction>
+                    (Vector2.Dot(Vector2.left, dirToTarget),
+                    Movement.Direction.left));
             }
-
-            float currentAngle = Vector2.Angle(movement.dirArray[(int)movement._dir], dirToTarget);
-
-            return getBestOption(new List<KeyValuePair<float, Movement.Direction>>() {
-                    new KeyValuePair<float, Movement.Direction>(currentAngle, movement._dir),
-                    new KeyValuePair<float, Movement.Direction>(leftA, Movement.Direction.left),
-                    new KeyValuePair<float, Movement.Direction>(rightA, Movement.Direction.right)
-                });
-
+            if (movement.checkDirectionClear(Vector2.right))
+            {
+                validOptions.Add(new KeyValuePair<float, Movement.Direction>
+                    (Vector2.Dot(Vector2.right, dirToTarget),
+                    Movement.Direction.right));
+            }
+            if (movement.checkDirectionClear(movement.dirDict[movement._dir])) {
+                validOptions.Add(new KeyValuePair<float, Movement.Direction>
+                    (Vector2.Dot(movement.dirDict[movement._dir], dirToTarget),
+                    movement._dir));
+            }
+                
         }
         else {
-            float upA = Vector2.Angle(Vector3.up, dirToTarget);
-            float downA = Vector2.Angle(Vector3.down, dirToTarget);
-
-            if (movement._dir == Movement.Direction.still)
+            if (movement.checkDirectionClear(Vector2.up))
             {
-                return getBestOption(new List<KeyValuePair<float, Movement.Direction>>() {
-                    new KeyValuePair<float, Movement.Direction>(upA, Movement.Direction.up),
-                    new KeyValuePair<float, Movement.Direction>(downA, Movement.Direction.down)
-                });
+                validOptions.Add(new KeyValuePair<float, Movement.Direction>
+                    (Vector2.Dot(Vector2.up, dirToTarget),
+                    Movement.Direction.up));
+            }
+            if (movement.checkDirectionClear(Vector2.down))
+            {
+                validOptions.Add(new KeyValuePair<float, Movement.Direction>
+                    (Vector2.Dot(Vector2.down, dirToTarget),
+                    Movement.Direction.down));
+            }
+            if (movement.checkDirectionClear(movement.dirDict[movement._dir]))
+            {
+                validOptions.Add(new KeyValuePair<float, Movement.Direction>
+                    (Vector2.Dot(movement.dirDict[movement._dir], dirToTarget),
+                    movement._dir));
             }
 
-            float currentAngle = Vector2.Angle(movement.dirArray[(int)movement._dir], dirToTarget);
-
-            return getBestOption(new List<KeyValuePair<float, Movement.Direction>>() {
-                    new KeyValuePair<float, Movement.Direction>(currentAngle, movement._dir),
-                    new KeyValuePair<float, Movement.Direction>(upA, Movement.Direction.up),
-                    new KeyValuePair<float, Movement.Direction>(downA, Movement.Direction.down)
-                });
         }
 
-        
+        //at a corner
+        if (validOptions.Count == 1) {
+            return validOptions[0].Value;
+        }
+        return getBestOption(validOptions);
+
+
     }
     public Movement.Direction getBestOption(List<KeyValuePair<float, Movement.Direction>> options) {
         KeyValuePair<float, Movement.Direction> bestOption = options[0];
         foreach (KeyValuePair<float, Movement.Direction> o in options) {
-            Debug.Log("cheking: " + o.Key + " with angle to player: " + o.Value);
-            if (o.Key < bestOption.Key) {
+            Debug.Log("checking dir " + o.Value);
+            if (o.Key > bestOption.Key) {
                 bestOption = o;
             }
         }
-
+        Debug.Log("choosing dir " + bestOption.Value);
         return bestOption.Value;
     }
 }

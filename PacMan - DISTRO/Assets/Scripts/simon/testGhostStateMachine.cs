@@ -26,7 +26,7 @@ public class moveState : ByTheTale.StateMachine.State {
 
     public testGhostStateMachine exampleCharacter { get { return (testGhostStateMachine)machine; } }
     private Movement movement;
-
+    private Movement.Direction lastDirection;
     
 
     public override void Enter()
@@ -45,36 +45,41 @@ public class moveState : ByTheTale.StateMachine.State {
     {
         base.Execute();
         
-        if (movement._dir == Movement.Direction.still)
-        {
-            Debug.Log("stuck");
+        
+        //int randStart = Random.Range(0, 10);
+        //for (int i = 0; i < movement.dirArray.Length; i++)
+        //{
+        //    if (movement.checkDirectionClear(movement.dir))
+        //    {
+                
+        //        if ((int)movement._dir == i)
+        //        {
+        //            Debug.Log("skipping " + (Movement.Direction)i);
+        //            continue;
+        //        }
 
-            int randStart = Random.Range(0, 10);
-            for (int i = 0; i < movement.dirArray.Length; i++)
-            {
-                if ((int)movement._dir == i)
-                {
-                    Debug.Log("skipping " + (Movement.Direction)i);
-                    continue;
-                }
+        //        if (movement.dirArray[i] * -1 == movement.dirArray[(int)movement._dir])
+        //        {
+        //            Debug.Log("skipping " + (Movement.Direction)i);
+        //            continue;
+        //        }
+        //        Debug.Log((Movement.Direction)i);
+        //        movement._dir = (Movement.Direction)i;
+                
 
-
-                int index = (i + randStart) % movement.dirArray.Length;
-
-                if (movement.dirArray[index] * -1 == movement.dirArray[(int)movement._dir])
-                {
-                    continue;
-                }
-                if (movement.checkDirectionClear(movement.dirArray[index]))
-                {
-                    Debug.Log((Movement.Direction)index);
-                    movement._dir = (Movement.Direction)index;
-                    break;
-                }
-            }
+        //        break;
+        //    }
+            
 
 
-        }
+        //    //int index = (i + randStart) % movement.dirArray.Length;
+
+            
+            
+        //}
+
+
+        
     }
 }
 

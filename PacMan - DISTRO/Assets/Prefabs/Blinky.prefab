@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 114891441812405348}
   - component: {fileID: 114141886144283326}
   - component: {fileID: 58348064196420372}
-  - component: {fileID: 873534838085115244}
+  - component: {fileID: 4615554663312071738}
   m_Layer: 0
   m_Name: Blinky
   m_TagString: ghost
@@ -119,6 +119,12 @@ MonoBehaviour:
   Map: []
   _dir: 0
   MSpeed: 5
+  dirArray:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: 1, y: 0}
+  - {x: -1, y: 0}
 --- !u!114 &114141886144283326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +171,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.08
---- !u!114 &873534838085115244
+--- !u!114 &4615554663312071738
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,6 +180,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1123822669406840}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c16fe35e8f9f44769a47abd6fc224bb6, type: 3}
+  m_Script: {fileID: 11500000, guid: a939e3beb29124ef99683257996918f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}

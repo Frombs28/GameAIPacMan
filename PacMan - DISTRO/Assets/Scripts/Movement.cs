@@ -28,7 +28,14 @@ public class Movement : MonoBehaviour {
 	private static Vector2 right = new Vector2(1f,0f);
 	private static Vector2 left = new Vector2(-1f,0f);
 
-    public Vector2[] dirArray = { none, up, down, right, left};
+    public Dictionary<Direction, Vector2> dirDict = new Dictionary<Direction, Vector2>() {
+        {Direction.up, up},
+        {Direction.down, down},
+        {Direction.left, left},
+        {Direction.right, right},
+        {Direction.still, none}
+
+    };
 	// Use this for initialization
 	void Start () {
 		string text = inputMap.text;
