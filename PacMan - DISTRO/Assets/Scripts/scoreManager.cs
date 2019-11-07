@@ -16,7 +16,7 @@ public class scoreManager : MonoBehaviour {
 	public GameObject pacman;
     private Text scoreText;
     private Text highText; 
-    private int score;
+    private static int score = 0;
     private int highscore;
     private int newlife;
     private int lives;
@@ -41,11 +41,10 @@ public class scoreManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        //numPelets = GameObject.FindGameObjectsWithTag("pellet").Length;
-        numPelets = 1;
+        numPelets = GameObject.FindGameObjectsWithTag("pellet").Length;
 
         aud = GetComponent<AudioSource>();
-        score = 0;
+        
         newlife = 0;
         lives = 4;
         scoreText = GameObject.Find("Score").GetComponent<Text>();
@@ -177,6 +176,7 @@ public class scoreManager : MonoBehaviour {
                 //game over motherfucker.
                 Time.timeScale = 0f;
                 gameOver.SetActive(true);
+                score = 0;
             }
         }
         else
@@ -283,7 +283,17 @@ public class scoreManager : MonoBehaviour {
     {
 
         Debug.Log("GAME WON");
-        //Restart();
+        Restart();
+        //StartCoroutine("Begin");
+        gameWon.SetActive(true);
+        if (Input.GetKeyDown(KeyCode.R)) {
+            numPelets = GameObject.FindGameObjectsWithTag("pellet").Length;
+            clyde.GetComponent<GhostAI>()._state = GhostAI.State.active;
+            pinky.GetComponent<GhostAI>()._state = GhostAI.State.active;
+            inky.GetComponent<GhostAI>()._state = GhostAI.State.active;
+            blinky.GetComponent<GhostAI>()._state = GhostAI.State.active;
+            gameWon.SetActive(false);
+        }
         //reset the score
 
         //reset the ghost postions
