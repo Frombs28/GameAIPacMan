@@ -142,6 +142,7 @@ public class GhostAI : MonoBehaviour {
 	public State _state = State.waiting;
 
     public Transform targetTile;
+    public Vector3 actualTarget;
 
     int currentDir = 1;
 
@@ -210,8 +211,12 @@ public class GhostAI : MonoBehaviour {
 
 		case(State.active):
             if (dead) {
-                //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
-            }
+                    //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
+                    actualTarget = gate.transform.position - new Vector3(0, -1.5f, 0);
+                    
+            } else {
+                    actualTarget = targetTile.position;
+                }
             //Steering AI here
             movementConfirm--;
             
@@ -306,7 +311,7 @@ public class GhostAI : MonoBehaviour {
         float lowestDistance = 999;
         int directionToMove = -1;
         for (int i = 0; i < potentialDirs.Count; i++) {
-            float currentDirDistance = Vector3.Distance(transform.position + num2vec3(potentialDirs[i]), targetTile.position);
+            float currentDirDistance = Vector3.Distance(transform.position + num2vec3(potentialDirs[i]), actualTarget);
             if (currentDirDistance < lowestDistance) {
                 lowestDistance = currentDirDistance;
                 directionToMove = potentialDirs[i];
