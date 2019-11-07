@@ -213,6 +213,7 @@ public class GhostAI : MonoBehaviour {
             if (dead) {
                     //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
                     actualTarget = startPos;
+                    //If back at starting position
                     if (Vector3.Distance(transform.position, actualTarget) < 0.2f) {
                         _state = State.leaving;
                         gameObject.GetComponent<Animator>().SetBool("Dead", false);
@@ -220,6 +221,8 @@ public class GhostAI : MonoBehaviour {
                         gameObject.GetComponent<Animator>().SetBool("Flicker", false);
                         dead = false;
                         fleeing = false;
+                        move.MSpeed = 5f;
+                        gameObject.GetComponent<CircleCollider2D>().enabled = true;
                     }
 
                 } else {
