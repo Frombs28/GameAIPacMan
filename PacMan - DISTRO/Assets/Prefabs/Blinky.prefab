@@ -119,12 +119,6 @@ MonoBehaviour:
   Map: []
   _dir: 0
   MSpeed: 5
-  dirArray:
-  - {x: 0, y: 0}
-  - {x: 0, y: 1}
-  - {x: 0, y: -1}
-  - {x: 1, y: 0}
-  - {x: -1, y: 0}
 --- !u!114 &114141886144283326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +149,7 @@ MonoBehaviour:
   choices: 
   choice: 0
   _state: 0
+  targetTile: {fileID: 0}
 --- !u!58 &58348064196420372
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -178,7 +173,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123822669406840}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a939e3beb29124ef99683257996918f9, type: 3}
   m_Name: 

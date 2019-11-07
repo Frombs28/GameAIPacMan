@@ -38,7 +38,8 @@ public class chaseState : ByTheTale.StateMachine.State
     Vector3 targetSquare;
     private Movement movement;
     private bool lastDirectionVert = false;
-
+    public Vector3 posAtDecision;
+    bool ableToMakeDecisions = true;
     public override void Enter()
     {
         base.Enter();
@@ -66,13 +67,28 @@ public class chaseState : ByTheTale.StateMachine.State
     }
     //when it reaches a dead, end, make the decision based on where the target direction is.
     public void updatePos() {
+        if (!ableToMakeDecisions) {
+            Debug.Log("distance away from decision" + (posAtDecision - blinkyAI.transform.position).magnitude);
 
-        if (movement._dir == Movement.Direction.still || isAtIntersection())
+        }
+        if ((posAtDecision - blinkyAI.transform.position).magnitude > 0.1f && !ableToMakeDecisions)
         {
+            Debug.Log(movement._dir);
+            ableToMakeDecisions = true;
+        }
+
+
+        if (isAtIntersection() && ableToMakeDecisions)
+        {
+            //makes a decision
+            //set the delta
             Vector3 directionToTarget = (targetSquare - blinkyAI.transform.position).normalized;
             movement._dir = setDirection(directionToTarget);
             lastDirectionVert = (movement._dir == Movement.Direction.up ||
                 movement._dir == Movement.Direction.down);
+            posAtDecision = blinkyAI.transform.position;
+
+            ableToMakeDecisions = false;
         }
         //if (isAtIntersection()) {
         //    //check if taking the intersection would be better than staying on your current trajectory
