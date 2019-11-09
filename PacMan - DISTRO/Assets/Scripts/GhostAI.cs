@@ -210,8 +210,6 @@ public class GhostAI : MonoBehaviour {
 
 
 		case(State.leaving):
-                //Stuck in this state?
-                //TODO: Have The Ghosts transform.translate towards the starting pos, turn state to active when finished
                 if (!foundLeave1)
                 {
                     actualTarget = leave1;
@@ -283,6 +281,7 @@ public class GhostAI : MonoBehaviour {
 
             // Leaving this code in here for you.
 			move._dir = Movement.Direction.still;
+                //Debug.Log("ENTERING");
 
 			if (transform.position.x < 13.48f || transform.position.x > 13.52) {
 				//print ("GOING LEFT OR RIGHT");

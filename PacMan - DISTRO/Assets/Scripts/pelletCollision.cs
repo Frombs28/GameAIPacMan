@@ -39,7 +39,7 @@ public class pelletCollision : MonoBehaviour {
             aud.Play();
 			Destroy (collision.gameObject);
 			gameManager.SendMessage("updateScore");
-            Debug.Log(gameManager.GetComponent<scoreManager>().numPelets);
+            //Debug.Log(gameManager.GetComponent<scoreManager>().numPelets);
             gameManager.GetComponent<scoreManager>().numPelets--;
 
         }

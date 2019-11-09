@@ -68,12 +68,12 @@ public class chaseState : ByTheTale.StateMachine.State
     //when it reaches a dead, end, make the decision based on where the target direction is.
     public void updatePos() {
         if (!ableToMakeDecisions) {
-            Debug.Log("distance away from decision" + (posAtDecision - blinkyAI.transform.position).magnitude);
+            //Debug.Log("distance away from decision" + (posAtDecision - blinkyAI.transform.position).magnitude);
 
         }
         if ((posAtDecision - blinkyAI.transform.position).magnitude > 0.1f && !ableToMakeDecisions)
         {
-            Debug.Log(movement._dir);
+            //Debug.Log(movement._dir);
             ableToMakeDecisions = true;
         }
 
@@ -193,12 +193,12 @@ public class chaseState : ByTheTale.StateMachine.State
     public Movement.Direction getBestOption(List<KeyValuePair<float, Movement.Direction>> options) {
         KeyValuePair<float, Movement.Direction> bestOption = options[0];
         foreach (KeyValuePair<float, Movement.Direction> o in options) {
-            Debug.Log("checking dir " + o.Value);
+            //Debug.Log("checking dir " + o.Value);
             if (o.Key > bestOption.Key) {
                 bestOption = o;
             }
         }
-        Debug.Log("choosing dir " + bestOption.Value);
+        //Debug.Log("choosing dir " + bestOption.Value);
         return bestOption.Value;
     }
 }
