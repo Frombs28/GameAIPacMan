@@ -212,41 +212,27 @@ public class GhostAI : MonoBehaviour {
 		case(State.leaving):
                 //Stuck in this state?
                 //TODO: Have The Ghosts transform.translate towards the starting pos, turn state to active when finished
-
-            actualTarget = leave2;
-            
-            movementConfirm--;
-            
-            newDir = directionToTurn(dead);
-            
-            if (newDir != currentDir) {
-                if (movementConfirm <= 0) {
-                    currentDir = newDir;
-                    move._dir = (Movement.Direction)currentDir;
-                    movementConfirm = 10;
+                if (!foundLeave1)
+                {
+                    actualTarget = leave1;
                 }
-            }
-            else
-            {
-                actualTarget = leave2;
-            }
-
-
-            transform.position = Vector3.MoveTowards(transform.position, actualTarget, Time.deltaTime*speed);
-
-            if ((leave1 - transform.position).magnitude < 0.0001f && !foundLeave1)
-            {
-                foundLeave1 = true;
-            }
-
+                else
+                {
+                    actualTarget = leave2;
+                }
+                transform.position = Vector3.MoveTowards(transform.position, actualTarget, Time.deltaTime * speed);
+                if ((leave1 - transform.position).magnitude < 0.0001f && !foundLeave1)
+                {
+                    foundLeave1 = true;
+                }
                 // When we reach our target (approximately), move on to the next state
                 if ((leave2 - transform.position).magnitude < 0.0001f)
-            {
+                {
                     _state = State.active;
                     move._dir = Movement.Direction.right;
-            }
-            
-			break;
+                }
+
+                break;
 
 		case(State.active):
 
