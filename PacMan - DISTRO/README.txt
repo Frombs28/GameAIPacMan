@@ -20,9 +20,10 @@ a dead ghost reaches the starting gate, re-entering the active state in the aliv
 the gate. It's speed will also be increased when dead. 
 In the alive sub-state, there exist another two sub-states: fleeing and not fleeing. Fleeing occurs when Pac-Man eats a power pellet while the ghost is in the active state. In the 
 fleeing sub-state, the ghost does not move towards a target; instead, it chooses a random direction to move in out of the potential directions in can move in at each intersection. 
-However, when the ghost is not fleeing, the target is determined by the XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX. These target positions are kept track of and updated in 
-TargetTilesController.cs. In here is the only place where the ghost's AIs differ: so the GhostAI.cs file can be applied to any ghost, without needing to specify which ghost it is being 
-applied to. The targets for our "original" Pac-Man ghosts function as follows:
+When the ghost is in the fleeing state for a certain amount of time and is not eaten, it will enter not fleeing mode. If it is eaten while in fleeing mode, then it enters the dead 
+sub-state, which was described previously. However, when the ghost is not fleeing, the target is determined by the XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX. These target positions are 
+kept track of and updated in TargetTilesController.cs. In here is the only place where the ghost's AIs differ: so the GhostAI.cs file can be applied to any ghost, without needing to 
+specify which ghost it is being applied to. The targets for our "original" Pac-Man ghosts function as follows:
 
 Blinky: the target is Pac-Man's current position.
 Pinky: the target is two "tiles" (where 1 tile = 1.5 Unity units) in front of Pac-Man's position.
@@ -40,4 +41,6 @@ Clyde:
 We also fixed some small things to make the game feel more like Pac-Man. The biggest one is that, after beating the level, the player can simply press "R" and restart the game, 
 allowing them to move on to the next level.
 
-The diagram for our ghost FSM can be found in a document called "Ghost FSM.png" in the same folder as this text document.
+The diagram for our ghost FSM can be found in a document called "Ghost FSM.png" in the same folder as this text document. The states are shown in individual circles, while the 
+state transitions are shown using arrows with labels on them that describe what triggers the transition. The sub-states for a given state are placed in a dashed box which the 
+"super-state" points to with a dashed arrow.
