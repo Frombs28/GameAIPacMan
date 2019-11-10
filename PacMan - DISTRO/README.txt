@@ -24,8 +24,20 @@ However, when the ghost is not fleeing, the target is determined by the XXXXXXXX
 TargetTilesController.cs. In here is the only place where the ghost's AIs differ: so the GhostAI.cs file can be applied to any ghost, without needing to specify which ghost it is being 
 applied to. The targets for our "original" Pac-Man ghosts function as follows:
 
-Blinky: the target is Pac-man's current position.
+Blinky: the target is Pac-Man's current position.
 Pinky: the target is two "tiles" (where 1 tile = 1.5 Unity units) in front of Pac-Man's position.
 Inky:
 Clyde: if Clyde is within 8 units of Pac-Man, Clyde's target is the bottom-left corner of the map. If Clyde is not within 8 units of Pac-Man, then Clyde's target is Pac-Man's current 
 position.
+
+The targets for our own version of the Pac-Man ghosts function as follows:
+
+Blinky: 
+Pinky: 
+Inky: 
+Clyde: 
+
+We also fixed some small things to make the game feel more like Pac-Man. The biggest one is that, after beating the level, the player can simply press "R" and restart the game, 
+allowing them to move on to the next level.
+
+The diagram for our ghost FSM can be found in a document called "Ghost FSM.png" in the same folder as this text document.
