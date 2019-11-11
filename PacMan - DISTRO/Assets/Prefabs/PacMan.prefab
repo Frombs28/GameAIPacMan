@@ -181,12 +181,6 @@ MonoBehaviour:
   Map: []
   _dir: 0
   MSpeed: 5
-  dirArray:
-  - {x: 0, y: 0}
-  - {x: 0, y: 1}
-  - {x: 0, y: -1}
-  - {x: 1, y: 0}
-  - {x: -1, y: 0}
 --- !u!114 &114286080140909296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +309,10 @@ MonoBehaviour:
   clyde: {fileID: 0}
   cellSize: 1.5
   bottomLeft: {x: -2, y: -32, z: 0}
+  bottomRight: {x: 29, y: -32, z: 0}
+  topLeft: {x: -2, y: 2, z: 0}
+  topRight: {x: 29, y: 2, z: 0}
+  aiMode: 0
 --- !u!1 &504132405321281337
 GameObject:
   m_ObjectHideFlags: 0

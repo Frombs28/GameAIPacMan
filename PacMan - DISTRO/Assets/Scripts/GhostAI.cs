@@ -239,13 +239,14 @@ public class GhostAI : MonoBehaviour {
             }
             if (dead) {
                     //I think this is what happens when power pelleted? Move back to ghost house, then set mode to leaving
-                    actualTarget = startPos;
+                    actualTarget = leave2;
                     print("DEAD");
                     dead = true;
                     fleeing = false;
                     //If back at starting position
                     if (Vector3.Distance(transform.position, actualTarget) < 0.2f) {
-                        _state = State.leaving;
+                        _state = State.active;
+                        move._dir = Movement.Direction.right;
                         gameObject.GetComponent<Animator>().SetBool("Dead", false);
                         gameObject.GetComponent<Animator>().SetBool("Running", false);
                         gameObject.GetComponent<Animator>().SetBool("Flicker", false);
