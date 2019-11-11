@@ -171,6 +171,9 @@ public class GhostAI : MonoBehaviour {
 	public void restart(){
 		releaseTime = releaseTimeReset;
 		transform.position = startPos;
+        dead = false;
+        foundLeave1 = false;
+        fleeing = false;
 		_state = State.waiting;
 	}
 	
@@ -227,6 +230,7 @@ public class GhostAI : MonoBehaviour {
                 if ((leave2 - transform.position).magnitude < 0.0001f)
                 {
                     _state = State.active;
+                    foundLeave1 = false;
                     move._dir = Movement.Direction.right;
                 }
 
