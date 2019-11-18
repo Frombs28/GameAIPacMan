@@ -17,8 +17,22 @@ public class Dog : MonoBehaviour {
     public float
         foodInBowl = 0f;
 
-    public bool ownerAtWork = false;
+    public bool 
+        ownerAtWork = false,
+        stickThrown = false,
+        sleeping = false;
 
+    //State Transitions Goes Here?
+    //To Print To Screen: GameManager.PrintAction("");
+
+
+    public void FallAsleep() {
+        //Fido is left alone and it calls this. It doesn't necessarily trigger sleep
+    }
+
+    public void SoundHeard() {
+        //Print different things based on what the float values above are
+    }
 
     void Update() {
         //Don't Let Values Exceed 1 or go below 0
@@ -41,5 +55,15 @@ public class Dog : MonoBehaviour {
         loneliness = 0.2f;
         bathroom = 0.8f;
         foodInBowl = 0;
+        ownerAtWork = false;
+        stickThrown = false;
+    }
+
+    //Partial Reset
+    public void WakeUp() {
+        hunger = 0.8f;
+        energy = 1.0f;
+        sleepiness = 0f;
+        bathroom = 0.8f;
     }
 }

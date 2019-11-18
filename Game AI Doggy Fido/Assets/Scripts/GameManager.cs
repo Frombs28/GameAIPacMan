@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public static int timeHours = 7, timeMinutes = 0;
 
+    public int timeSinceBellyRubMinutes = 100;
+
     //For Debug
     public bool printKeyPresses = true;
 
@@ -86,7 +88,7 @@ public class GameManager : MonoBehaviour
         //Update Time
         timeText.text = "Time:\n" + timeHours.ToString("D2") + ":" + timeMinutes.ToString("D2");
 
-        actionText.text = "------Recent Actions------";
+        actionText.text = "==========Recent Actions==========";
 
         foreach (string action in prevActions) {
             actionText.text += "\n" + action;
@@ -117,6 +119,13 @@ public class GameManager : MonoBehaviour
 
     //F, Decrease Hunger, Slightly Increase Bond
     public void AddFoodToBowl() {
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Can't Give Food While At Work");
+            }
+            return;
+        }
+
         if (fido.foodInBowl > 0.95) {
             if (printKeyPresses) {
                 PrintAction("There is already food in Fido's Bowl");
@@ -131,49 +140,163 @@ public class GameManager : MonoBehaviour
 
     //T, Decrease Hunger Slightly, Increase Bond, Increase Happiness
     public void GiveDogTreat() {
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Can't Give A Treat While At Work");
+            }
+            return;
+        }
+
         if (printKeyPresses) {
             PrintAction("You Give Fido A Treat");
         }
+        fido.hunger -= 0.04f;
+        fido.energy += 0.05f;
+        fido.happiness += 0.05f;
+        fido.loyalty += 0.01f;
     }
 
     //K
     public void ThrowStickForFetch() {
-        if (printKeyPresses) {
-            PrintAction("You Throw A Stick For Fetch");
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Can't Throw A Stick While At Work");
+            }
+            return;
+        }
+
+        if (fido.stickThrown) {
+            if (printKeyPresses) {
+                PrintAction("Fido Still Hasn't Gotten The Stick From Last Time");
+            }
+        } else {
+            if (printKeyPresses) {
+                PrintAction("You Throw A Stick For Fetch");
+            }
+            fido.stickThrown = true;
         }
     }
     
     //P
     public void Pet() {
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Can't Pet Fido While At Work");
+            }
+            return;
+        }
+
+        if (fido.sleeping) {
+            if (printKeyPresses) {
+                PrintAction("He's Sleeping, Leave Him Alone :(");
+            }
+            return;
+        }
+
         if (printKeyPresses) {
             PrintAction("You Pet Fido");
         }
+
+        fido.happiness += 0.05f;
+        fido.loyalty += 0.02f;
     }
 
     //B
     public void BellyRub() {
-        if (printKeyPresses) {
-            PrintAction("You Give Fido A Belly Rub");
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Can't Belly Rub Fido While At Work");
+            }
+            return;
         }
+        if (fido.sleeping) {
+            if (printKeyPresses) {
+                PrintAction("He's Sleeping, Leave Him Alone :(");
+            }
+            return;
+        }
+
+        if (timeSinceBellyRubMinutes < 30) {
+            if (printKeyPresses) {
+                PrintAction("You Give Fido A Belly Rub, He Enjoys It");
+                fido.loyalty += 0.05f;
+                fido.happiness += 0.08f;
+                timeSinceBellyRubMinutes = 0;
+            }
+        } else {
+            if (printKeyPresses) {
+                PrintAction("You Already Recently Gave Fido A Belly Rub, He Dislikes It");
+                fido.loyalty -= 0.04f;
+                fido.happiness -= 0.1f;
+                timeSinceBellyRubMinutes = 0;
+            }
+        }
+
     }
 
     //W
     public void GoOnWalk() {
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Can't Go On A Walk While At Work");
+            }
+            return;
+        }
+
+        if (fido.sleeping) {
+            if (printKeyPresses) {
+                PrintAction("Fido Is Sleeping, He Doesn't Want To Walk");
+            }
+            return;
+        }
+
+        if (fido.energy < 0.4f) {
+            if (printKeyPresses) {
+                PrintAction("Fido Is Tired, He Doesn't Want To Walk");
+            }
+        }
+
         if (printKeyPresses) {
             PrintAction("You Go On A Walk With Fido");
         }
+
+        fido.energy -= 0.4f;
+        fido.happiness += 0.1f;
+        fido.loyalty += 0.02f;
+        fido.bathroom = 0f;
     }
 
     //L
     public void LeaveDogAlone() {
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Can't Leave Fido Alone While At Work");
+            }
+            return;
+        }
+
+        if (fido.sleeping) {
+            if (printKeyPresses) {
+                PrintAction("Fido is already asleep");
+            }
+            return;
+        }
+
         if (printKeyPresses) {
             PrintAction("You Leave Fido Alone");
         }
+        fido.FallAsleep();
     }
 
     //G
     public void GoToWork() {
-        if (fido.ownerAtWork) return;
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You're Already At Work");
+            }
+            return;
+        }
+
         if (printKeyPresses) {
             PrintAction("You Go To Work");
         }
@@ -182,7 +305,13 @@ public class GameManager : MonoBehaviour
 
     //A
     public void GetHomeFromWork() {
-        if (!fido.ownerAtWork) return;
+        if (!fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You Are Already Home");
+            }
+            return;
+        }
+
         if (printKeyPresses) {
             PrintAction("You Come Home From Work");
         }
@@ -203,14 +332,36 @@ public class GameManager : MonoBehaviour
             PrintAction("1 Hour Passes");
         }
         AddTime(60);
+
+        if (fido.ownerAtWork) {
+
+        } else {
+
+        }
     }
 
     //D
     public void NewDay() {
+        //Need to have certain conditions met
+        if (!fido.sleeping) {
+            if (printKeyPresses) {
+                PrintAction("Fido Isn't Sleeping");
+            }
+            return;
+        }
+        if (fido.ownerAtWork) {
+            if (printKeyPresses) {
+                PrintAction("You can't start a new day while at work");
+            }
+            return;
+        }
+
+
         if (printKeyPresses) {
             PrintAction("A New Day Starts");
         }
         SetTime(7, 0);
+        fido.WakeUp();
     }
 
     //S
@@ -218,6 +369,9 @@ public class GameManager : MonoBehaviour
         if (printKeyPresses) {
             PrintAction("A Mysterious Sound Is Heard");
         }
+
+        //Different things based on different float levels
+        fido.SoundHeard();
     }
 
     //R
