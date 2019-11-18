@@ -14,6 +14,11 @@ public class Dog : MonoBehaviour {
         loneliness = 0.2f,
         bathroom = 0.8f;
 
+    public float
+        foodInBowl = 0f;
+
+    public bool ownerAtWork = false;
+
 
     void Update() {
         //Don't Let Values Exceed 1 or go below 0
@@ -24,6 +29,7 @@ public class Dog : MonoBehaviour {
         loyalty = Mathf.Clamp(loyalty, 0, 1);
         loneliness = Mathf.Clamp(loneliness, 0, 1);
         bathroom = Mathf.Clamp(bathroom, 0, 1);
+        foodInBowl = Mathf.Clamp(foodInBowl, 0, 1);
     }
 
     public void Reset() {
@@ -34,5 +40,6 @@ public class Dog : MonoBehaviour {
         loyalty = 0.8f;
         loneliness = 0.2f;
         bathroom = 0.8f;
+        foodInBowl = 0;
     }
 }

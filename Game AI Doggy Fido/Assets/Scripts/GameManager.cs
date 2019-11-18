@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     public Text timeText;
 
     public Dog fido;
-    public Owner person;
 
     private static List<string> prevActions;
 
@@ -111,13 +110,23 @@ public class GameManager : MonoBehaviour
         timeMinutes = minutes;
     }
 
+
+
+
+    //Actions///////////////////////////////
+
     //F, Decrease Hunger, Slightly Increase Bond
     public void AddFoodToBowl() {
-        if (printKeyPresses) {
-            PrintAction("You Add Food To Fido's Bowl");
+        if (fido.foodInBowl > 0.95) {
+            if (printKeyPresses) {
+                PrintAction("There is already food in Fido's Bowl");
+            }
+        } else {
+            if (printKeyPresses) {
+                PrintAction("You Add Food To Fido's Bowl");
+            }
+            fido.foodInBowl = 1.0f;
         }
-        fido.hunger -= 1.0f;
-        fido.loyalty += 0.05f;
     }
 
     //T, Decrease Hunger Slightly, Increase Bond, Increase Happiness
@@ -164,20 +173,20 @@ public class GameManager : MonoBehaviour
 
     //G
     public void GoToWork() {
-        if (person.atWork) return;
+        if (fido.ownerAtWork) return;
         if (printKeyPresses) {
             PrintAction("You Go To Work");
         }
-        person.atWork = true;
+        fido.ownerAtWork = true;
     }
 
     //A
     public void GetHomeFromWork() {
-        if (!person.atWork) return;
+        if (!fido.ownerAtWork) return;
         if (printKeyPresses) {
             PrintAction("You Come Home From Work");
         }
-        person.atWork = false;
+        fido.ownerAtWork = false;
     }
 
     //I
@@ -219,6 +228,5 @@ public class GameManager : MonoBehaviour
             PrintAction("Restarting Sim...");
         }
         fido.Reset();
-        person.Reset();
     }
 }
