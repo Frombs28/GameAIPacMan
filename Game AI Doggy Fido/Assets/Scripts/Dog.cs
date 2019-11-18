@@ -39,7 +39,12 @@ public class Dog : ByTheTale.StateMachine.MachineBehaviour
         //Print different things based on what the float values above are
     }
 
-    void Update() {
+    public override void Start()
+    {
+        base.Start();
+    }
+    public override void Update() {
+        base.Update();
         //Don't Let Values Exceed 1 or go below 0
         happiness = Mathf.Clamp(happiness, 0, 1);
         sleepiness = Mathf.Clamp(sleepiness, 0, 1);
