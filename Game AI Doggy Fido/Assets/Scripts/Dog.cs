@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dog : MonoBehaviour {
+public class Dog : ByTheTale.StateMachine.MachineBehaviour
+{
 
     //Starting Sim at 7am
     public float
@@ -26,6 +27,10 @@ public class Dog : MonoBehaviour {
     //To Print To Screen: GameManager.PrintAction("");
 
 
+    public override void AddStates()
+    {
+        throw new System.NotImplementedException();
+    }
     public void FallAsleep() {
         //Fido is left alone and it calls this. It doesn't necessarily trigger sleep
     }
@@ -66,4 +71,6 @@ public class Dog : MonoBehaviour {
         sleepiness = 0f;
         bathroom = 0.8f;
     }
+
+    
 }
