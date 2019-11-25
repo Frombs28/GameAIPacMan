@@ -1,0 +1,28 @@
+tree "Root"
+    while isRunning
+        sequence
+            tree("tired")
+            tree("hungry")
+            tree("lonely")
+            tree("wantsToPlay")
+            tree("goOut")
+            tree("hearsANoise")
+
+
+tree("tired")
+    sequence
+        
+        
+tree("hungry")
+    sequence
+        doIHaveFood
+        
+    
+tree("lonely")
+    Succeed
+tree("wantsToPlay")
+    Succeed
+tree("goOut")
+    Succeed
+tree("hearsANoise")
+    Succeed

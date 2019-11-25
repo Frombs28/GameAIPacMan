@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dog : ByTheTale.StateMachine.MachineBehaviour
+public class Dog : MonoBehaviour
 {
 
     //Starting Sim at 7am
@@ -13,9 +13,7 @@ public class Dog : ByTheTale.StateMachine.MachineBehaviour
         sleepiness = 0.1f,
         loyalty = 0.8f,
         loneliness = 0.2f,
-        bathroom = 0.8f;
-
-    public float
+        bathroom = 0.8f,
         foodInBowl = 0f;
 
     public bool 
@@ -27,10 +25,7 @@ public class Dog : ByTheTale.StateMachine.MachineBehaviour
     //To Print To Screen: GameManager.PrintAction("");
 
 
-    public override void AddStates()
-    {
-        throw new System.NotImplementedException();
-    }
+
     public void FallAsleep() {
         //Fido is left alone and it calls this. It doesn't necessarily trigger sleep
     }
@@ -38,13 +33,15 @@ public class Dog : ByTheTale.StateMachine.MachineBehaviour
     public void SoundHeard() {
         //Print different things based on what the float values above are
     }
-
-    public override void Start()
+    public static Dog instance;
+    public void Awake()
     {
-        base.Start();
+        instance = this;
     }
-    public override void Update() {
-        base.Update();
+    public void Start()
+    {
+    }
+    public void Update() {
         //Don't Let Values Exceed 1 or go below 0
         happiness = Mathf.Clamp(happiness, 0, 1);
         sleepiness = Mathf.Clamp(sleepiness, 0, 1);

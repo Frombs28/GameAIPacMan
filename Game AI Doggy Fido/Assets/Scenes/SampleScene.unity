@@ -3162,6 +3162,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353780399}
   m_CullTransparentMesh: 0
+--- !u!1 &1435616441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1435616444}
+  - component: {fileID: 1435616443}
+  - component: {fileID: 1435616442}
+  m_Layer: 0
+  m_Name: BehaviorTreeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1435616442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435616441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cf17d5612ae4a089a8f1619ace1937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1435616443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435616441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scripts:
+  - {fileID: 4900000, guid: 196b8575919e549e8a0f468043fe5e67, type: 3}
+  autoReset: 1
+  tickOn: 0
+  sourceInfos:
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
+--- !u!4 &1435616444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435616441}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -33.10289, y: 292.50333, z: -232.74518}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1489769491
 GameObject:
   m_ObjectHideFlags: 0
@@ -3440,7 +3506,7 @@ MonoBehaviour:
   prevActionsToTrack: 16
   timeText: {fileID: 734382963}
   fido: {fileID: 1888051184}
-  person: {fileID: 1888051183}
+  timeSinceBellyRubMinutes: 100
   printKeyPresses: 1
 --- !u!4 &1888051182
 Transform:
@@ -3468,7 +3534,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83df44c623ac60a4eb9b46d666bfa620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atWork: 0
 --- !u!114 &1888051184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3486,8 +3551,12 @@ MonoBehaviour:
   happiness: 0.4
   sleepiness: 0.1
   loyalty: 0.5
-  boredom: 0.5
+  loneliness: 0.2
   bathroom: 0.8
+  foodInBowl: 0
+  ownerAtWork: 0
+  stickThrown: 0
+  sleeping: 0
 --- !u!1 &1914297240
 GameObject:
   m_ObjectHideFlags: 0
