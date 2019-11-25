@@ -48,12 +48,12 @@ public class Dog : MonoBehaviour
 
     public void GoInside()
     {
-        gm.SendAction("Fido Wants To Go Back Inside");
+        GameManager.instance.PrintAction("Fido Wants To Go Back Inside");
     }
 
     public void GoOutside()
     {
-        gm.SendAction("Fido Wants To Go Outside!");
+        GameManager.instance.PrintAction("Fido Wants To Go Outside!");
     }
 
     public void EatBowl()

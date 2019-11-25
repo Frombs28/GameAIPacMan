@@ -21,9 +21,11 @@ public class GameManager : MonoBehaviour
     //For Debug
     public bool printKeyPresses = true;
 
+    public static GameManager instance;
     void Start() {
         _prevActionsToTrack = prevActionsToTrack;
         prevActions = new List<string>();
+        instance = this;
     }
 
     int t = 0;
@@ -95,12 +97,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void PrintAction(string text) {
+    string lastText = "";
+    public void PrintAction(string text) {
+        if (lastText.Equals(text)) {
+            return;
+        }
         while (prevActions.Count > _prevActionsToTrack-1) {
             prevActions.RemoveAt(0);
         }
 
         prevActions.Add(text);
+        lastText = text;
     }
 
     public static void AddTime(int minutes) {
@@ -144,12 +151,6 @@ public class GameManager : MonoBehaviour
             if (printKeyPresses) {
                 PrintAction("You Can't Give A Treat While At Work");
             }
-            return;
-        }
-
-        if(fido.hunger >= 0.80f && printKeyPresses)
-        {
-            PrintAction("Fido is Full");
             return;
         }
 
@@ -262,20 +263,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (!fido.outOfHouse && printKeyPresses) {
+        if (printKeyPresses) {
             PrintAction("You Go On A Walk With Fido");
-            fido.outOfHouse = true;
-            fido.energy -= 0.4f;
-            fido.happiness += 0.1f;
-            fido.loyalty += 0.02f;
-            fido.bathroom = 0f;
         }
 
-        if (fido.outOfHouse && printKeyPresses)
-        {
-            PrintAction("You Bring Fido Back Inside");
-            fido.outOfHouse = false;
-        }
+        fido.energy -= 0.4f;
+        fido.happiness += 0.1f;
+        fido.loyalty += 0.02f;
+        fido.bathroom = 0f;
     }
 
     //L

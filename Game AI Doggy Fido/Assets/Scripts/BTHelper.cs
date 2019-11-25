@@ -81,8 +81,20 @@ public class BTHelper : MonoBehaviour
     [Task]
     public void eatFood()
     {
-        Dog.instance.gm.SendAction("Fido Has Eaten and Is Full!");
-        Dog.
+        //Dog.instance.
+    }
+
+    [Task]
+    public void botherOwner()
+    {
+        if(Dog.instance.foodInBowl <= 0.05f)
+        {
+            GameManager.instance.PrintAction("Fido Is Begging You To Fill The Food Bowl!");
+        }
+        else
+        {
+
+        }
     }
 
 }
