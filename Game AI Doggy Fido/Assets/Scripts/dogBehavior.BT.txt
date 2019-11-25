@@ -1,28 +1,38 @@
 tree "Root"
     while isRunning
         sequence
-            tree("tired")
             tree("hungry")
-            tree("lonely")
-            tree("wantsToPlay")
-            tree("goOut")
+			tree("bathroom")
+			tree("tired")
             tree("hearsANoise")
+			tree("wantsToPlay")
 
 
-tree("tired")
-    sequence
-        
-        
 tree("hungry")
     sequence
-        doIHaveFood
+		wantToGoInside
+		walkToDish
+		//while BowlEmpty
+		botherOwner
+		eatFood
         
-    
-tree("lonely")
-    Succeed
-tree("wantsToPlay")
-    Succeed
-tree("goOut")
-    Succeed
+tree("bathroom")
+    fallback
+        bathroomOutside
+		bathroomInside
+
+tree("tired")
+	stopPlaying
+	goInside
+	goToSleep
+
 tree("hearsANoise")
+    fallback
+		sequence
+			isNight
+			bark
+			readyForBed
+		getExcited
+
+tree("wantsToPlay")
     Succeed

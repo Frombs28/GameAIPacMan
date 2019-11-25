@@ -22,7 +22,7 @@ public class BTHelper : MonoBehaviour
     //inside these there should be conditional statements based on the data in Gamemanager
     [Task]
     public void testIdle() {
-        
+
         Debug.Log("idle");
         Task.current.Succeed();
     }
@@ -49,5 +49,48 @@ public class BTHelper : MonoBehaviour
             Task.current.Fail();
         }
     }
-       
+
+    [Task]
+    public void wantToGoInside()
+    {
+        if (Dog.instance.outOfHouse)
+        {
+            Dog.instance.GoInside();
+        }
+
+        Task.current.Succeed();
+    }
+
+    [Task]
+    public bool NotInside()
+    {
+        if (Dog.instance.outOfHouse)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    [Task]
+    public void walkToDish()
+    {
+        Dog.instance.
+    }
+
+    [Task]
+    public void botherOwner()
+    {
+        if(Dog.instance.foodInBowl <= 0.05f)
+        {
+            Dog.instance.gm.SendAction("Fido Is Begging You To Fill The Food Bowl!");
+        }
+        else
+        {
+
+        }
+    }
+
 }

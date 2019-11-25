@@ -147,6 +147,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if(fido.hunger >= 0.80f && printKeyPresses)
+        {
+            PrintAction("Fido is Full");
+            return;
+        }
+
         if (printKeyPresses) {
             PrintAction("You Give Fido A Treat");
         }
@@ -256,14 +262,20 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (printKeyPresses) {
+        if (!fido.outOfHouse && printKeyPresses) {
             PrintAction("You Go On A Walk With Fido");
+            fido.outOfHouse = true;
+            fido.energy -= 0.4f;
+            fido.happiness += 0.1f;
+            fido.loyalty += 0.02f;
+            fido.bathroom = 0f;
         }
 
-        fido.energy -= 0.4f;
-        fido.happiness += 0.1f;
-        fido.loyalty += 0.02f;
-        fido.bathroom = 0f;
+        if (fido.outOfHouse && printKeyPresses)
+        {
+            PrintAction("You Bring Fido Back Inside");
+            fido.outOfHouse = false;
+        }
     }
 
     //L
@@ -382,5 +394,10 @@ public class GameManager : MonoBehaviour
             PrintAction("Restarting Sim...");
         }
         fido.Reset();
+    }
+
+    public void SendAction(string message)
+    {
+        PrintAction(message);
     }
 }
