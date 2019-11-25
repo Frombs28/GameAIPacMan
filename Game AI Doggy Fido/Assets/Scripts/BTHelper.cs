@@ -19,26 +19,30 @@ public class BTHelper : MonoBehaviour
 
     }
 
-    //inside these there should be conditional statements based on the data in Gamemanager
     [Task]
-    public void testIdle() {
-        
-        Debug.Log("idle");
-        Task.current.Succeed();
+    public void test1(){
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            Task.current.Succeed();
+        }
     }
     [Task]
     public void test2()
     {
-        Debug.Log("idle2");
-        if (Input.GetKeyDown(KeyCode.A)) {
-            Dog.instance.sleeping = true;
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Task.current.Succeed();
         }
-        if (Dog.instance.sleeping) {
+    }
+    [Task]
+    public void test3()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
             Task.current.Succeed();
         }
     }
 
-    [Task]
+
     public void doIHaveFood()
     {
         if (Dog.instance.foodInBowl > 0)
@@ -49,5 +53,36 @@ public class BTHelper : MonoBehaviour
             Task.current.Fail();
         }
     }
-       
+
+    [Task]
+    public void walkOverToBowl()
+    {
+        if (Dog.instance.energy > 0)
+        {
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+    [Task]
+    public void eatFood()
+    {
+
+        if (Dog.instance.hunger > 1) {
+            Task.current.Fail();
+        }
+        Dog.instance.energy += 0.1f;
+        Dog.instance.foodInBowl -= 0.1f;
+
+        Task.current.Succeed();
+
+
+    }
+
+
+
+
 }

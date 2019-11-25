@@ -1,22 +1,23 @@
 tree "Root"
-    while isRunning
-        sequence
-            tree("tired")
-            tree("hungry")
-            tree("lonely")
-            tree("wantsToPlay")
-            tree("goOut")
-            tree("hearsANoise")
+    sequence
+        tree("hungry")
+    
+        tree("tired")
+        
+        
+        tree("lonely")
+        tree("wantsToPlay")
+        tree("goOut")
+        tree("hearsANoise")
 
 
 tree("tired")
-    sequence
-        
-        
+    Succeed         
 tree("hungry")
     sequence
+        walkOverToBowl
         doIHaveFood
-        
+        eatFood
     
 tree("lonely")
     Succeed
