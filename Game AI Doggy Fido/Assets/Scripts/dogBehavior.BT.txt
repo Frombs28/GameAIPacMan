@@ -1,11 +1,5 @@
-tree "Root"
-    while isRunning
-        sequence
-            tree("hungry")
-			tree("bathroom")
-			tree("tired")
-            tree("hearsANoise")
-			tree("wantsToPlay")
+tree("Root")
+    Succeed
 
 
 tree("hungry")

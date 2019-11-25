@@ -59,6 +59,7 @@ public class BTHelper : MonoBehaviour
     {
         if (Dog.instance.outOfHouse)
         {
+            GameManager.instance.PrintAction("fido wants to go inside to eat");
             Task.current.Fail();
         }
 
@@ -83,18 +84,4 @@ public class BTHelper : MonoBehaviour
     {
         //Dog.instance.
     }
-
-    [Task]
-    public void botherOwner()
-    {
-        if(Dog.instance.foodInBowl <= 0.05f)
-        {
-            GameManager.instance.PrintAction("Fido Is Begging You To Fill The Food Bowl!");
-        }
-        else
-        {
-
-        }
-    }
-
 }
