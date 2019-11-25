@@ -19,7 +19,10 @@ public class Dog : MonoBehaviour
     public bool 
         ownerAtWork = false,
         stickThrown = false,
-        sleeping = false;
+        sleeping = false,
+        outOfHouse = false;
+
+    public GameManager gm;
 
     //State Transitions Goes Here?
     //To Print To Screen: GameManager.PrintAction("");
@@ -40,7 +43,19 @@ public class Dog : MonoBehaviour
     }
     public void Start()
     {
+        gm = FindObjectOfType<GameManager>();
     }
+
+    public void GoInside()
+    {
+        gm.SendAction("Fido Wants To Go Back Inside");
+    }
+
+    public void GoOutside()
+    {
+        gm.SendAction("Fido Wants To Go Outside!");
+    }
+
     public void Update() {
         //Don't Let Values Exceed 1 or go below 0
         happiness = Mathf.Clamp(happiness, 0, 1);
@@ -64,6 +79,7 @@ public class Dog : MonoBehaviour
         foodInBowl = 0;
         ownerAtWork = false;
         stickThrown = false;
+        outOfHouse = false;
     }
 
     //Partial Reset
@@ -72,6 +88,7 @@ public class Dog : MonoBehaviour
         energy = 1.0f;
         sleepiness = 0f;
         bathroom = 0.8f;
+        outOfHouse = false;
     }
 
     

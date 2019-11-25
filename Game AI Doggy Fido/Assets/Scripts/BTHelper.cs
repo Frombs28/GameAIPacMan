@@ -20,10 +20,10 @@ public class BTHelper : MonoBehaviour
     }
 
     [Task]
-    public void test1(){
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            Task.current.Succeed();
-        }
+    public void testIdle() {
+
+        Debug.Log("idle");
+        Task.current.Succeed();
     }
     [Task]
     public void test2()
@@ -55,34 +55,46 @@ public class BTHelper : MonoBehaviour
     }
 
     [Task]
-    public void walkOverToBowl()
+    public void wantToGoInside()
     {
-        if (Dog.instance.energy > 0)
+        if (Dog.instance.outOfHouse)
         {
-            Task.current.Succeed();
+            Dog.instance.GoInside();
+        }
+
+        Task.current.Succeed();
+    }
+
+    [Task]
+    public bool NotInside()
+    {
+        if (Dog.instance.outOfHouse)
+        {
+            return false;
         }
         else
         {
-            Task.current.Fail();
+            return true;
         }
     }
 
     [Task]
-    public void eatFood()
+    public void walkToDish()
     {
-
-        if (Dog.instance.hunger > 1) {
-            Task.current.Fail();
-        }
-        Dog.instance.energy += 0.1f;
-        Dog.instance.foodInBowl -= 0.1f;
-
-        Task.current.Succeed();
-
-
+        Dog.instance.
     }
 
+    [Task]
+    public void botherOwner()
+    {
+        if(Dog.instance.foodInBowl <= 0.05f)
+        {
+            Dog.instance.gm.SendAction("Fido Is Begging You To Fill The Food Bowl!");
+        }
+        else
+        {
 
-
+        }
+    }
 
 }
