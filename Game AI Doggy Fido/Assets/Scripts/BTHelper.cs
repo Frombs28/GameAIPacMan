@@ -82,6 +82,8 @@ public class BTHelper : MonoBehaviour
     [Task]
     public void eatFood()
     {
-        //Dog.instance.
+        // Print ("Fido Has Eaten and Is Full!");
+        Dog.instance.EatBowl();
+        Task.current.Succeed();
     }
 }
