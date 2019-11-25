@@ -10,8 +10,7 @@ tree "Root"
 
 tree("hungry")
     sequence
-		wantToGoInside
-		walkToDish
+		goInside
 		//while BowlEmpty
 		botherOwner
 		eatFood

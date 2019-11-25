@@ -56,6 +56,11 @@ public class Dog : MonoBehaviour
         gm.SendAction("Fido Wants To Go Outside!");
     }
 
+    public void EatBowl()
+    {
+
+    }
+
     public void Update() {
         //Don't Let Values Exceed 1 or go below 0
         happiness = Mathf.Clamp(happiness, 0, 1);

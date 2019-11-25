@@ -395,9 +395,4 @@ public class GameManager : MonoBehaviour
         }
         fido.Reset();
     }
-
-    public void SendAction(string message)
-    {
-        PrintAction(message);
-    }
 }

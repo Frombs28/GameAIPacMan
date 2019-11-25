@@ -51,33 +51,14 @@ public class BTHelper : MonoBehaviour
     }
 
     [Task]
-    public void wantToGoInside()
+    public void goInside()
     {
         if (Dog.instance.outOfHouse)
         {
-            Dog.instance.GoInside();
+            Task.current.Fail();
         }
 
         Task.current.Succeed();
-    }
-
-    [Task]
-    public bool NotInside()
-    {
-        if (Dog.instance.outOfHouse)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    [Task]
-    public void walkToDish()
-    {
-        Dog.instance.
     }
 
     [Task]
@@ -85,12 +66,19 @@ public class BTHelper : MonoBehaviour
     {
         if(Dog.instance.foodInBowl <= 0.05f)
         {
-            Dog.instance.gm.SendAction("Fido Is Begging You To Fill The Food Bowl!");
+            Task.current.Fail();
         }
         else
         {
-
+            Task.current.Succeed();
         }
+    }
+
+    [Task]
+    public void eatFood()
+    {
+        Dog.instance.gm.SendAction("Fido Has Eaten and Is Full!");
+        Dog.
     }
 
 }
