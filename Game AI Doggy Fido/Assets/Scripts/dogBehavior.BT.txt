@@ -1,31 +1,35 @@
 tree("Root")
-    Succeed
-
-
-tree("hungry")
     sequence
-		goInside
-		//while BowlEmpty
-		botherOwner
-		eatFood
+        tree("isAwake")
+        tree("hungry")
+        tree("bathroom")
+        tree("goAboutDay")
+
+tree("isAwake")
+    isSleeping
+   
+tree("hungry")
+    fallback
+        checkIfHungry
+        sequence
+            tryToGoInside
+            botherOwner
+            eatFood
         
 tree("bathroom")
     fallback
+        checkIfHasToGoToBathroom
         bathroomOutside
-		bathroomInside
-
-tree("tired")
-	stopPlaying
-	goInside
-	goToSleep
-
-tree("hearsANoise")
+        tapOnDoorToGoToBathRoom
+        
+tree("goAboutDay")
     fallback
-		sequence
-			isNight
-			bark
-			readyForBed
-		getExcited
-
-tree("wantsToPlay")
-    Succeed
+        isGettingSleepy
+        sequence
+            isFidoInside
+            fallback
+                asksForWalk
+                asksForPet
+                doesNothing
+        hasEnergyForStick
+        

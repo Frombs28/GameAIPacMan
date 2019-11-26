@@ -32,8 +32,8 @@ public class Dog : MonoBehaviour
     public void FallAsleep() {
         //Fido is left alone and it calls this. It doesn't necessarily trigger sleep
     }
-
     public void SoundHeard() {
+        energy += 0.5f;
         //Print different things based on what the float values above are
     }
     public static Dog instance;
@@ -58,7 +58,8 @@ public class Dog : MonoBehaviour
 
     public void EatBowl()
     {
-
+        hunger -= foodInBowl;
+        foodInBowl = 0;
     }
 
     public void Update() {
@@ -89,6 +90,7 @@ public class Dog : MonoBehaviour
 
     //Partial Reset
     public void WakeUp() {
+        sleeping = false;
         hunger = 0.8f;
         energy = 1.0f;
         sleepiness = 0f;
