@@ -20,7 +20,8 @@ public class Dog : MonoBehaviour
         ownerAtWork = false,
         stickThrown = false,
         sleeping = false,
-        outOfHouse = false;
+        outOfHouse = false,
+        soundHeard = false;
 
     public GameManager gm;
 
@@ -34,6 +35,7 @@ public class Dog : MonoBehaviour
     }
     public void SoundHeard() {
         energy += 0.5f;
+        soundHeard = true;
         //Print different things based on what the float values above are
     }
     public static Dog instance;
@@ -76,9 +78,9 @@ public class Dog : MonoBehaviour
 
     public void Reset() {
         hunger = 0.8f;
-        energy = 0.8f;
+        energy = 1.0f;
         happiness = 0.4f;
-        sleepiness = 0.1f;
+        sleepiness = 0f;
         loyalty = 0.8f;
         loneliness = 0.2f;
         bathroom = 0.8f;
@@ -86,6 +88,8 @@ public class Dog : MonoBehaviour
         ownerAtWork = false;
         stickThrown = false;
         outOfHouse = false;
+        soundHeard = false;
+        sleeping = false;
     }
 
     //Partial Reset
@@ -96,6 +100,9 @@ public class Dog : MonoBehaviour
         sleepiness = 0f;
         bathroom = 0.8f;
         outOfHouse = false;
+        soundHeard = false;
+        stickThrown = false;
+        ownerAtWork = false;
     }
 
     

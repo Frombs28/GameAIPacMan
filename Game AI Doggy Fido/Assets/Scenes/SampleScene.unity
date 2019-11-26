@@ -1652,7 +1652,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Go On Walk
+  m_Text: 'Go On / Stop Walk
 
     (W)'
 --- !u!222 &710419458
@@ -3508,6 +3508,8 @@ MonoBehaviour:
   fido: {fileID: 1888051184}
   timeSinceBellyRubMinutes: 100
   printKeyPresses: 1
+  pd: {fileID: 1435616443}
+  newDay: 0
 --- !u!4 &1888051182
 Transform:
   m_ObjectHideFlags: 0
@@ -3558,6 +3560,7 @@ MonoBehaviour:
   stickThrown: 0
   sleeping: 0
   outOfHouse: 0
+  soundHeard: 0
   gm: {fileID: 0}
 --- !u!1 &1914297240
 GameObject:

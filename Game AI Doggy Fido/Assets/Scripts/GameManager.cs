@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     public PandaBehaviour pd;
 
+    public bool newDay = false;
+
     public static GameManager instance;
     void Start() {
         _prevActionsToTrack = prevActionsToTrack;
@@ -129,6 +131,16 @@ public class GameManager : MonoBehaviour
             Dog.instance.sleepiness += 0.1f;
             Dog.instance.energy -= 0.1f;
         }
+        if(!newDay && timeHours >= 7 && timeHours < 8)
+        {
+            Dog.instance.WakeUp();
+            PrintAction("Fido wakes up!");
+            newDay = true;
+        }
+        if(newDay && timeHours >= 8)
+        {
+            newDay = false;
+        }
         pd.Tick();
 
 
@@ -201,10 +213,10 @@ public class GameManager : MonoBehaviour
         } else {
             if (printKeyPresses) {
                 PrintAction("You Throw A Stick For Fetch");
-                AddTime(10);
             }
             fido.stickThrown = true;
         }
+        AddTime(10);
     }
     
     //P
@@ -223,6 +235,14 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (fido.loneliness < 0.1f)
+        {
+            if (printKeyPresses)
+            {
+                PrintAction("Fido does not need any more petting");
+            }
+        }
+
         if (printKeyPresses) {
             PrintAction("You Pet Fido");
             AddTime(4);
@@ -230,6 +250,7 @@ public class GameManager : MonoBehaviour
 
         fido.happiness += 0.05f;
         fido.loyalty += 0.02f;
+        fido.loneliness -= 0.05f;
     }
 
     //B
@@ -288,7 +309,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (fido.energy < 0.4f) {
+        if (fido.energy < 0.4f && fido.bathroom < 0.8f) {
             if (printKeyPresses) {
                 PrintAction("Fido Is Tired, He Doesn't Want To Walk");
                 return;
@@ -299,10 +320,15 @@ public class GameManager : MonoBehaviour
             PrintAction("You Go On A Walk With Fido");
         }
 
-        fido.energy -= 0.4f;
+        if (printKeyPresses && fido.bathroom >= 0.3f)
+        {
+            PrintAction("Fido goes to the bathroom outside :)");
+            fido.bathroom = 0f;
+        }
+
+        fido.energy -= 0.2f;
         fido.happiness += 0.1f;
         fido.loyalty += 0.02f;
-        fido.bathroom = 0f;
         Dog.instance.outOfHouse = true;
         AddTime(20);
     }

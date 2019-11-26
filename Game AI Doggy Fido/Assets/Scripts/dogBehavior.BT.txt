@@ -1,35 +1,36 @@
 tree("Root")
-    sequence
-        tree("isAwake")
-        tree("hungry")
-        tree("bathroom")
-        tree("goAboutDay")
+	sequence
+		tree("isAwake")
+		tree("hungry")
+		tree("bathroom")
+		tree("goAboutDay")
 
 tree("isAwake")
-    isSleeping
-   
+	isSleeping
+
 tree("hungry")
-    fallback
-        checkIfHungry
-        sequence
-            tryToGoInside
-            botherOwner
-            eatFood
-        
+	fallback
+		checkIfHungry
+		sequence
+			tryToGoInside
+			botherOwner
+			eatFood
+
 tree("bathroom")
-    fallback
-        checkIfHasToGoToBathroom
-        bathroomOutside
-        tapOnDoorToGoToBathRoom
-        
+	fallback
+		checkIfHasToGoToBathroom
+		bathroomOutside
+		tapOnDoorToGoToBathRoom
+
 tree("goAboutDay")
-    fallback
-        isGettingSleepy
-        sequence
-            isFidoInside
-            fallback
-                asksForWalk
-                asksForPet
-                doesNothing
-        hasEnergyForStick
+	fallback
+		isGettingSleepy
+		sequence
+			isFidoInside
+			fallback
+				hasHeardSound
+				asksForWalk
+				asksForPet
+				doesNothing
+		hasEnergyForStick
         

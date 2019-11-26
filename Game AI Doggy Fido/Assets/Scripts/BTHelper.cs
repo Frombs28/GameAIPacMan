@@ -220,9 +220,10 @@ public class BTHelper : MonoBehaviour
     {
         if (Dog.instance.stickThrown)
         {
-            if (Dog.instance.energy > 0.5f)
+            if (Dog.instance.energy > 0.2f)
             {
                 GameManager.instance.PrintAction("fido is fetching getting stick");
+                Dog.instance.energy -= 0.1f;
                 Dog.instance.stickThrown = false;
                 Task.current.Succeed();
             }
@@ -273,6 +274,21 @@ public class BTHelper : MonoBehaviour
         }
         else {
             Task.current.Succeed();
+        }
+    }
+
+    [Task]
+    public void hasHeardSound()
+    {
+        if(Dog.instance.soundHeard == true)
+        {
+            GameManager.instance.PrintAction("fido heard a sound and got more energy: he's barking at it!");
+            Dog.instance.soundHeard = false;
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
         }
     }
 
