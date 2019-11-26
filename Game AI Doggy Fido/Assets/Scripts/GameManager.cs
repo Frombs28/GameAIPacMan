@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Panda;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,11 +22,14 @@ public class GameManager : MonoBehaviour
     //For Debug
     public bool printKeyPresses = true;
 
+    public PandaBehaviour pd;
+
     public static GameManager instance;
     void Start() {
         _prevActionsToTrack = prevActionsToTrack;
         prevActions = new List<string>();
         instance = this;
+        pd.Tick();
     }
 
     int t = 0;
@@ -36,17 +40,23 @@ public class GameManager : MonoBehaviour
             timeMinutes -= 60;
             timeHours++;
             timeHours %= 24;
+            
         }
 
         //Check for buttons presses
         if (Input.GetKeyDown(KeyCode.F)) {
             AddFoodToBowl();
+            
+
+
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             GiveDogTreat();
+            
         }
         if (Input.GetKeyDown(KeyCode.K)) {
             ThrowStickForFetch();
+            
         }
         if (Input.GetKeyDown(KeyCode.P)) {
             Pet();
@@ -110,8 +120,18 @@ public class GameManager : MonoBehaviour
         lastText = text;
     }
 
-    public static void AddTime(int minutes) {
+    public void AddTime(int minutes) {
+
         timeMinutes += minutes;
+        Dog.instance.bathroom += minutes / 300f;
+        Dog.instance.hunger += minutes / 300f;
+        if (timeHours >= 17 || timeHours < 7) {
+            Dog.instance.sleepiness += 0.1f;
+            Dog.instance.energy -= 0.1f;
+        }
+        pd.Tick();
+
+
     }
 
     public static void SetTime(int hours, int minutes) {
@@ -142,6 +162,7 @@ public class GameManager : MonoBehaviour
                 PrintAction("You Add Food To Fido's Bowl");
             }
             fido.foodInBowl = 1.0f;
+            AddTime(5);
         }
     }
 
@@ -156,6 +177,7 @@ public class GameManager : MonoBehaviour
 
         if (printKeyPresses) {
             PrintAction("You Give Fido A Treat");
+            AddTime(4);
         }
         fido.hunger -= 0.04f;
         fido.energy += 0.05f;
@@ -179,6 +201,7 @@ public class GameManager : MonoBehaviour
         } else {
             if (printKeyPresses) {
                 PrintAction("You Throw A Stick For Fetch");
+                AddTime(10);
             }
             fido.stickThrown = true;
         }
@@ -202,6 +225,7 @@ public class GameManager : MonoBehaviour
 
         if (printKeyPresses) {
             PrintAction("You Pet Fido");
+            AddTime(4);
         }
 
         fido.happiness += 0.05f;
@@ -229,6 +253,7 @@ public class GameManager : MonoBehaviour
                 fido.loyalty += 0.05f;
                 fido.happiness += 0.08f;
                 timeSinceBellyRubMinutes = 0;
+                AddTime(10);
             }
         } else {
             if (printKeyPresses) {
@@ -243,6 +268,12 @@ public class GameManager : MonoBehaviour
 
     //W
     public void GoOnWalk() {
+
+        if (Dog.instance.outOfHouse) {
+            PrintAction("Letting Fido back inside");
+            Dog.instance.outOfHouse = false;
+            return;
+        }
         if (fido.ownerAtWork) {
             if (printKeyPresses) {
                 PrintAction("You Can't Go On A Walk While At Work");
@@ -260,6 +291,7 @@ public class GameManager : MonoBehaviour
         if (fido.energy < 0.4f) {
             if (printKeyPresses) {
                 PrintAction("Fido Is Tired, He Doesn't Want To Walk");
+                return;
             }
         }
 
@@ -271,6 +303,8 @@ public class GameManager : MonoBehaviour
         fido.happiness += 0.1f;
         fido.loyalty += 0.02f;
         fido.bathroom = 0f;
+        Dog.instance.outOfHouse = true;
+        AddTime(20);
     }
 
     //L
@@ -291,6 +325,7 @@ public class GameManager : MonoBehaviour
 
         if (printKeyPresses) {
             PrintAction("You Leave Fido Alone");
+            AddTime(10);
         }
         fido.FallAsleep();
     }
@@ -303,9 +338,14 @@ public class GameManager : MonoBehaviour
             }
             return;
         }
+        if (Dog.instance.outOfHouse) {
+            PrintAction("fido will run away if you do not let them inside");
+            return;
+        }
 
         if (printKeyPresses) {
             PrintAction("You Go To Work");
+            AddTime(10);
         }
         fido.ownerAtWork = true;
     }
@@ -321,23 +361,21 @@ public class GameManager : MonoBehaviour
 
         if (printKeyPresses) {
             PrintAction("You Come Home From Work");
+            AddTime(0);
         }
         fido.ownerAtWork = false;
     }
 
     //I
     public void Idle() {
-        if (printKeyPresses) {
-            PrintAction("15 Minutes Pass");
-        }
+
         AddTime(15);
+
     }
 
     //H
     public void Hour() {
-        if (printKeyPresses) {
-            PrintAction("1 Hour Passes");
-        }
+
         AddTime(60);
 
         if (fido.ownerAtWork) {
@@ -368,6 +406,7 @@ public class GameManager : MonoBehaviour
             PrintAction("A New Day Starts");
         }
         SetTime(7, 0);
+
         fido.WakeUp();
     }
 
@@ -378,6 +417,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Different things based on different float levels
+        AddTime(0);
         fido.SoundHeard();
     }
 

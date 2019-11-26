@@ -3171,8 +3171,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1435616444}
-  - component: {fileID: 1435616443}
   - component: {fileID: 1435616442}
+  - component: {fileID: 1435616443}
   m_Layer: 0
   m_Name: BehaviorTreeManager
   m_TagString: Untagged
@@ -3207,7 +3207,7 @@ MonoBehaviour:
   scripts:
   - {fileID: 4900000, guid: 196b8575919e549e8a0f468043fe5e67, type: 3}
   autoReset: 1
-  tickOn: 0
+  tickOn: 3
   sourceInfos:
   - isFoldout: 1
     breakPoints: 
@@ -3546,7 +3546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc90e0b53b54a554b825ec58b051c68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hunger: 0.8
+  hunger: 0.9
   energy: 0.8
   happiness: 0.4
   sleepiness: 0.1
@@ -3557,6 +3557,8 @@ MonoBehaviour:
   ownerAtWork: 0
   stickThrown: 0
   sleeping: 0
+  outOfHouse: 0
+  gm: {fileID: 0}
 --- !u!1 &1914297240
 GameObject:
   m_ObjectHideFlags: 0
