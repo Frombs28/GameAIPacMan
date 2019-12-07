@@ -18,11 +18,11 @@ public enum BoardSpace {
 /// </summary>
 public class BoardScript : MonoBehaviour {
 
-    public bool _weightedSEF = false;
-    public static bool weightedSEF = false;
+    public bool _betterSEF = false;
+    public static bool betterSEF = false;
 
-    public bool _negamax = false;
-    public static bool negamax = false;
+    public bool _ABnegamax = false;
+    public static bool ABnegamax = false;
 
     public int _searchDepth = 5;
     public static int searchDepth = 5;
@@ -52,8 +52,8 @@ public class BoardScript : MonoBehaviour {
     List<GameObject> possibleMovesArray;
     bool posMovesShown;
     void Awake() {
-        weightedSEF = _weightedSEF;
-        negamax = _negamax;
+        betterSEF = _betterSEF;
+        ABnegamax = _ABnegamax;
         searchDepth = _searchDepth;
 
         //determines which side is player
@@ -70,6 +70,9 @@ public class BoardScript : MonoBehaviour {
          * If you are feeling ambitious, you could add a button to the UI that allows the player
          * to change who-plays-what and which AI to use to avoid having to change these manually.
          */
+
+        isPlayerOneAI = false;
+        isPlayerTwoAI = true;
 
         /* For the calls to System.Reflection.Assembly.GetExecutingAssembly() below, enter the
          * string that names your .cs module that contains your AI code, such as is shown here
@@ -246,6 +249,7 @@ public class BoardScript : MonoBehaviour {
         BoardSpace enemyColor = turnNumber % 2 == 0 ? BoardSpace.WHITE : BoardSpace.BLACK;
         BoardSpace ourColor = turnNumber % 2 == 0 ? BoardSpace.BLACK : BoardSpace.WHITE;
         if (board.Length != 8 || board[0].Length != 8 || y < 0 || y >= 8 || x < 0 || x >= 8 || board[y][x] != ourColor) {
+            Debug.Log(board[y][x]);
             return null;
         }
 
