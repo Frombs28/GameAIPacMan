@@ -18,6 +18,15 @@ public enum BoardSpace {
 /// </summary>
 public class BoardScript : MonoBehaviour {
 
+    public bool _weightedSEF = false;
+    public static bool weightedSEF = false;
+
+    public bool _negamax = false;
+    public static bool negamax = false;
+
+    public int _searchDepth = 5;
+    public static int searchDepth = 5;
+
     public GameObject piecePrefab;
     BoardSpace[][] board;
     GameObject[][] boardGameObjects;
@@ -43,6 +52,10 @@ public class BoardScript : MonoBehaviour {
     List<GameObject> possibleMovesArray;
     bool posMovesShown;
     void Awake() {
+        weightedSEF = _weightedSEF;
+        negamax = _negamax;
+        searchDepth = _searchDepth;
+
         //determines which side is player
 
         /*
@@ -58,9 +71,6 @@ public class BoardScript : MonoBehaviour {
          * to change who-plays-what and which AI to use to avoid having to change these manually.
          */
 
-        isPlayerOneAI = false;
-        isPlayerTwoAI = true;
-
         /* For the calls to System.Reflection.Assembly.GetExecutingAssembly() below, enter the
          * string that names your .cs module that contains your AI code, such as is shown here
          * for RandomAI. Do this in two places if you want to let the AI play either as Black
@@ -70,7 +80,7 @@ public class BoardScript : MonoBehaviour {
 
         possibleMovesArray = new List<GameObject>();
         if (isPlayerOneAI) {
-            System.Type scriptType = System.Reflection.Assembly.GetExecutingAssembly().GetType("RandomAI");
+            System.Type scriptType = System.Reflection.Assembly.GetExecutingAssembly().GetType("OthelloAI");
             //System.Type scriptType = System.Reflection.Assembly.GetExecutingAssembly().GetType(playerOneScriptClassName);
             System.Object o = Activator.CreateInstance(scriptType);
             playerOneScript = (AIScript)o;
@@ -78,7 +88,7 @@ public class BoardScript : MonoBehaviour {
         }
         if (isPlayerTwoAI) {
             //System.Type scriptType = System.Reflection.Assembly.GetExecutingAssembly().GetType(playerTwoScriptClassName);
-            System.Type scriptType = System.Reflection.Assembly.GetExecutingAssembly().GetType("RandomAI");
+            System.Type scriptType = System.Reflection.Assembly.GetExecutingAssembly().GetType("OthelloAI");
             System.Object o = Activator.CreateInstance(scriptType);
             playerTwoScript = (AIScript)o;
             playerTwoScript.setColor(BoardSpace.WHITE);
@@ -208,6 +218,7 @@ public class BoardScript : MonoBehaviour {
                 }
             }
         }
+        //Update Score Text
         int blackCount = 0;
         int whiteCount = 0;
         foreach (BoardSpace[] row in board)
