@@ -32,6 +32,16 @@ public class OthelloAI : AIScript{
     //TODO: Improvements: It's better to have fewer pieces on the board during mid-game, figure out
     //a way to add this to the BetterSEF function
     int[,] sefWeights = {
+        {20, -3, 3, 3, 3, 3, -3, 20},
+        {-3, -4, -1, -1, -1, -1, -4, -3},
+        {3, -1, 1, 0, 0, 1, -1, 3},
+        {3, -1, 0, 1, 1, 0, -1, 3},
+        {3, -1, 0, 1, 1, 0, -1, 3},
+        {3, -1, 1, 0, 0, 1, -1, 3},
+        {-3, -4, -1, -1, -1, -1, -4, -3},
+        {20, -3, 3, 3, 3, 3, -3, 20}
+    };
+    /*int[,] sefWeights = {
         {5, 2, 3, 3, 3, 3, 2, 5},
         {2, 1, 1, 1, 1, 1, 1, 2},
         {3, 1, 1, 1, 1, 1, 1, 3},
@@ -40,7 +50,7 @@ public class OthelloAI : AIScript{
         {3, 1, 1, 1, 1, 1, 1, 3},
         {2, 1, 1, 1, 1, 1, 1, 2},
         {5, 2, 3, 3, 3, 3, 2, 5}
-    };
+    };*/
     public int BetterSEF(BoardSpace[][] board) {
         int blackCount = 0;
         int whiteCount = 0;
